@@ -1,4 +1,2 @@
-# news-api
-API for collecting news around world
+# CoroNow
 
-Firebase storage for news api
