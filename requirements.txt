@@ -15,6 +15,7 @@ geopy==1.21.0
 googletransx==2.4.2
 idna==2.9
 multidict==4.7.5
+nltk==3.4.5
 numpy==1.18.2
 pandas==1.0.3
 pycares==3.1.1
