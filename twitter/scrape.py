@@ -56,7 +56,11 @@ def clean_tweet(tweet):
     return cleaned_tweet
 
 def word_freq():
-    pass
+    c = Counter()
+    for t in twint.output.tweets_list:
+        ct = clean_tweet(t.tweet)
+        c.update(ct.split())
+    return c
     
 def hashtag_freq():
     return Counter([h for t in twint.output.tweets_list for h in t.hashtags])
