@@ -1,2 +1,6 @@
 credential.py
 .DS_Store
+.vscode/*
+*.log
+.venv/
+__pycache__/
