@@ -1,4 +1,5 @@
 import twint
+import os
 import datetime
 from collections import Counter
 import re
@@ -24,14 +25,18 @@ def download_nltk_resources():
     nltk.download('stopwords')
     nltk.download('wordnet')
 
-def get_tweets(keyword, limit):
+def get_tweets(keyword, limit=100):
+    try:
+        os.mkdir(f"{datetime.date.today()}_{datetime.datetime.now().hour}")
+    except:
+        pass
     c = twint.Config()
     c.Search = keyword
     c.Lang = "en"
     c.Limit = limit
     c.Store_object = True
     c.Store_json = True
-    c.Output = f"scraped_tweets_{datetime.date.today()}_{datetime.datetime.now().time()}.json"
+    c.Output = f"{datetime.date.today()}_{datetime.datetime.now().hour}/tweets_{keyword}.json"
     twint.run.Search(c)
 
 def clean_tweet(tweet):
@@ -65,6 +70,16 @@ def word_freq():
 def hashtag_freq():
     return Counter([h for t in twint.output.tweets_list for h in t.hashtags])
 
+def scrape():
+    word_count = Counter()
+    hashtag_count = Counter()
+    for k in keywords:
+        get_tweets(k)
+        word_count.update(word_freq())
+        hashtag_count.update(hashtag_freq())
+    print(word_count.most_common(100))
+    print(hashtag_count.most_common(100))
+
 if __name__ == "__main__":
     download_nltk_resources()
-    get_tweets("covid-19", 100)
+    scrape()
