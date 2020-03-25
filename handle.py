@@ -11,11 +11,6 @@ def check_update(api):
     else:
         return False
 
-def search_news(country, category, keyword):
+def search_news(country, category, keyword, api):
     print("Search for data country: {0}, keyword: {1}, category: {2}".format(country, keyword, category))
-    newsapi = NewsAPI()
-    if check_update(newsapi):
-        return newsapi.headlines(keyword=keyword, country=country, category=category)
-    else:
-        return None
-    
+    return api.headlines(keyword=keyword, country=country, category=category)

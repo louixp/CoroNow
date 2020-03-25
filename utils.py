@@ -19,6 +19,9 @@ def save_date():
     json.dump(dateObj, f)
     f.close()
 
+def format_date():
+    date = check_date()
+    return "{0}-{1}-{2}-{3}-{4}".format(date[0], date[1], date[2], date[3], date[4])
 
 def load_date():
     f = open(datefile, 'r')

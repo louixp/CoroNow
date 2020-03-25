@@ -11,3 +11,6 @@ firebaseConfig = {
     "appId": "1:787414217798:web:5a013427d62e4425da4647",
     "measurementId": "G-X4NZ3H0HDS"
 }
+keywords = {"Coronavirus", "Koronavirus", "Corona", "CDC", "Wuhancoronavirus", "Wuhanlockdown", "Ncov", 
+            "Wuhan", "N95", "Kungflu", "Epidemic", "Outbreak", "Sinophobia", "China", "Covid-19 ", 
+            "Corona virus", "Covid", "Covid19", "Sars-cov-2", "COVID–19", "COVD", "Pandemic"}

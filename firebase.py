@@ -35,15 +35,21 @@ class firebaseAPI:
             }
             self.register(account_info, user_info)
 
-    def store_data(self, col, data, key=""):
-        if key == "":
+    def store_data(self, col, data, keys=[]):
+        if keys == []:
             self.db.child(col).push(data)
         else:
-            self.db.child(col).child(key).set(data)
+            keystr = ""
+            for key in keys:
+                keystr += "/" + key
+            self.db.child(col).child(keystr).set(data)
 
-    def retrieve_data(self, col, key=""):
-        if key == "":
+    def retrieve_data(self, col, keys=[]):
+        if keys == []:
             data = self.db.child(col).get()
         else:
-            data = self.db.child(col).child(key).get()
+            keystr = ""
+            for key in keys:
+                keystr += "/" + key
+            data = self.db.child(col).child(keystr).get()
         return data
