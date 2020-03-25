@@ -1,10 +1,12 @@
 """
-This is the top-level starting script for a flask server app
+This is the starting script for a flask server app
 """
 
-from flask import Flask, request
+from flask import Flask, request, Response
 import json
-import devices
+import os
+
+static_path = os.path.abspath(os.path.dirname(__file__))
 
 # set the project root directory as the static folder, you can set others.
 app = Flask(__name__,
@@ -12,13 +14,13 @@ app = Flask(__name__,
             static_folder='../frontend/build')
 
 
-@app.route('/api/markEvent', methods=['POST'])
-def markEvent():
+@app.route('/')
+def index():
     """
-    mark the next coming line from 
+    default
     """
-    pass
+    return app.send_static_file('index.html')
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(port=3459)
