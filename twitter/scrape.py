@@ -27,7 +27,7 @@ def download_nltk_resources():
 
 def get_tweets(keyword, limit=100):
     try:
-        os.mkdir(f"{datetime.date.today()}_{datetime.datetime.now().hour}")
+        os.mkdir(f"{datetime.date.today()}-{datetime.datetime.now().hour}")
     except:
         pass
     c = twint.Config()
@@ -36,7 +36,7 @@ def get_tweets(keyword, limit=100):
     c.Limit = limit
     c.Store_object = True
     c.Store_json = True
-    c.Output = f"{datetime.date.today()}_{datetime.datetime.now().hour}/tweets_{keyword}.json"
+    c.Output = f"{datetime.date.today()}-{datetime.datetime.now().hour}/tweets_{keyword}.json"
     twint.run.Search(c)
 
 def clean_tweet(tweet):
