@@ -15,7 +15,7 @@ import os
 # set the project root directory as the static folder, you can set others.
 app = Flask(__name__,
             static_url_path='',
-            static_folder='../frontend/build')
+            static_folder='frontend/build')
 
 
 @app.route('/api/wordcloud', methods=['get'])
