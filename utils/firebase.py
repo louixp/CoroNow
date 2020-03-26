@@ -1,5 +1,6 @@
 import pyrebase
 
+
 class firebaseAPI:
     def __init__(self, config):
         self.firebase = pyrebase.initialize_app(config)
@@ -16,7 +17,7 @@ class firebaseAPI:
         self.token = user["idToken"]
         self.db.child("users").push(user_info, self.token)
         print("Account created successfully!")
-    
+
     def auth(self, account_info):
         auth = self.firebase.auth()
         email = account_info["email"]
@@ -52,4 +53,14 @@ class firebaseAPI:
             for key in keys:
                 keystr += "/" + key
             data = self.db.child(col).child(keystr).get()
+        return data
+
+    def delete_data(self, col, keys=[]):
+        if keys == []:
+            data = self.db.child(col).remove()
+        else:
+            keystr = ""
+            for key in keys:
+                keystr += "/" + key
+            data = self.db.child(col).child(keystr).remove()
         return data

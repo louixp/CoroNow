@@ -7,15 +7,13 @@ import nltk
 from nltk.tokenize import word_tokenize, sent_tokenize
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords
-from upload import upload
-from utils import calculate_time, save_date
+from .upload import upload
+from utils.utils import calculate_time, save_date
+from config import keywords
 import ssl
 import time
 
 # keywords provided by https://arxiv.org/abs/2003.07372
-keywords = {"Coronavirus", "Koronavirus", "Corona", "CDC", "Wuhancoronavirus", "Wuhanlockdown", "Ncov",
-            "Wuhan", "N95", "Kungflu", "Epidemic", "Outbreak", "Sinophobia", "China", "Covid-19 ",
-            "Corona virus", "Covid", "Covid19", "Sars-cov-2", "COVID–19", "COVD", "Pandemic"}
 
 
 def download_nltk_resources():
@@ -32,7 +30,8 @@ def download_nltk_resources():
 
 def get_tweets(keyword, limit=100):
     try:
-        os.mkdir(f"{datetime.date.today()}-{datetime.datetime.now().hour}")
+        os.mkdir(
+            f"./data/{datetime.date.today()}-{datetime.datetime.now().hour}")
     except:
         pass
     c = twint.Config()
@@ -41,7 +40,7 @@ def get_tweets(keyword, limit=100):
     c.Limit = limit
     c.Store_object = True
     c.Store_json = True
-    c.Output = f"{datetime.date.today()}-{datetime.datetime.now().hour}/tweets_{keyword}.json"
+    c.Output = f"./data/{datetime.date.today()}-{datetime.datetime.now().hour}/tweets_{keyword}.json"
     twint.run.Search(c)
 
 
@@ -91,22 +90,13 @@ def scrape():
     print(hashtag_count.most_common(100))
 
 
-def check_update():
-    if calculate_time() >= 60:
-        save_date()
-        return True
-    else:
-        return False
-
-
-if __name__ == "__main__":
-    while (True):
-        if check_update():
-            download_nltk_resources()
-            print("Start Scraping")
-            scrape()
-            print("Start Uploading")
-            upload()
-        else:
-            print("Waiting")
-        time.sleep(60)
+def twitter_init(base, mode):
+    if mode == 0 or mode == 2:
+        download_nltk_resources()
+        print("===== Start Scraping ====")
+        scrape()
+        print("===== Finish Scraping ====")
+    if mode == 1 or mode == 2:
+        print("===== Start Uploading ====")
+        upload(base)
+        print("===== Finish Uploading ====")

@@ -1,8 +1,9 @@
-from firebase import firebaseAPI
+from utils.firebase import firebaseAPI
 from config import firebaseConfig
 import glob
 import json
 import pprint
+
 
 def upload_dict(dictObj, api):
     for key in dictObj.keys():
@@ -15,19 +16,20 @@ def upload_dict(dictObj, api):
                         print("----"+keyword)
                         for tweet in keyword_arr[keyword]:
                             print("-------"+str(tweet["id"]))
-                            api.store_data(key, tweet, [str(time), str(keyword), str(tweet["id"])])
-                            
+                            api.store_data(
+                                key, tweet, [str(time), str(keyword), str(tweet["id"])])
 
-def upload():
+
+def upload(firebase):
     data_list = []
-    firebase = firebaseAPI(firebaseConfig)
-    for dir in glob.glob('./[0-9]*-[0-9]*-[0-9]*-[0-9]*'):
+    for dir in glob.glob('./data/[0-9]*-[0-9]*-[0-9]*-[0-9]*'):
         date = dir.split('\\')[1]
         time_list = []
-        for jsonfile in glob.glob("./{0}/tweets_*".format(dir)):
-            keyword = jsonfile.split('\\')[2].replace(".json","").replace("tweets_", "")
+        for jsonfile in glob.glob("{0}/tweets_*".format(dir)):
+            keyword = jsonfile.split('\\')[2].replace(
+                ".json", "").replace("tweets_", "")
             tweet_list = []
-            db = open(jsonfile, "r", encoding = 'utf-8')
+            db = open(jsonfile, "r", encoding='utf-8')
             print("Database opened for reading")
             for tweet_str in db:
                 tweet = json.loads(tweet_str)
@@ -36,6 +38,5 @@ def upload():
             time_list.append(tweet_col)
         time_col = {date: time_list}
         data_list.append(time_col)
-    data_col = {"tweets" : data_list}
+    data_col = {"tweets": data_list}
     upload_dict(data_col, firebase)
-        
