@@ -1,0 +1,33 @@
+Traceback (most recent call last):
+  File "start.py", line 32, in <module>
+    main(2, 2)
+  File "start.py", line 22, in main
+    twitter_init(firebase, mode)
+  File "/home/pi/Projects/CoroNow/twitter/scrape.py", line 97, in twitter_init
+    scrape()
+  File "/home/pi/Projects/CoroNow/twitter/scrape.py", line 86, in scrape
+    get_tweets(k)
+  File "/home/pi/Projects/CoroNow/twitter/scrape.py", line 44, in get_tweets
+    twint.run.Search(c)
+  File "/home/pi/Projects/CoroNow/.venv/lib/python3.7/site-packages/twint/run.py", line 322, in Search
+    run(config, callback)
+  File "/home/pi/Projects/CoroNow/.venv/lib/python3.7/site-packages/twint/run.py", line 221, in run
+    get_event_loop().run_until_complete(Twint(config).main(callback))
+  File "/usr/lib/python3.7/asyncio/base_events.py", line 584, in run_until_complete
+    return future.result()
+  File "/home/pi/Projects/CoroNow/.venv/lib/python3.7/site-packages/twint/run.py", line 149, in main
+    await task
+  File "/home/pi/Projects/CoroNow/.venv/lib/python3.7/site-packages/twint/run.py", line 194, in run
+    await self.tweets()
+  File "/home/pi/Projects/CoroNow/.venv/lib/python3.7/site-packages/twint/run.py", line 140, in tweets
+    await output.Tweets(tweet, self.config, self.conn)
+  File "/home/pi/Projects/CoroNow/.venv/lib/python3.7/site-packages/twint/output.py", line 149, in Tweets
+    await checkData(tweets, config, conn)
+  File "/home/pi/Projects/CoroNow/.venv/lib/python3.7/site-packages/twint/output.py", line 136, in checkData
+    _output(tweet, output, config)
+  File "/home/pi/Projects/CoroNow/.venv/lib/python3.7/site-packages/twint/output.py", line 86, in _output
+    write.Json(obj, config)
+  File "/home/pi/Projects/CoroNow/.venv/lib/python3.7/site-packages/twint/storage/write.py", line 74, in Json
+    with open(base, "a", newline='', encoding="utf-8") as json_file:
+FileNotFoundError: [Errno 2] No such file or directory: './data/2020-03-26-12/tweets_COVID–19.json'
+
