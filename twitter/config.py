@@ -8,3 +8,4 @@ firebaseConfig = {
     "appId": "1:787414217798:web:5a013427d62e4425da4647",
     "measurementId": "G-X4NZ3H0HDS"
 }
+datefile = "./data.json"
