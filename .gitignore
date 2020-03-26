@@ -4,4 +4,3 @@ credential.py
 *.log
 .venv/
 __pycache__/
-*.json
