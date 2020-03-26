@@ -23,10 +23,10 @@ def upload_dict(dictObj, api):
 def upload(firebase):
     data_list = []
     for dir in glob.glob('./data/[0-9]*-[0-9]*-[0-9]*-[0-9]*'):
-        date = dir.split('/')[1]
+        date = dir.split('/')[2]
         time_list = []
         for jsonfile in glob.glob("{0}/tweets_*".format(dir)):
-            keyword = jsonfile.split('/')[2].replace(
+            keyword = jsonfile.split('/')[3].replace(
                 ".json", "").replace("tweets_", "")
             tweet_list = []
             db = open(jsonfile, "r", encoding='utf-8')
