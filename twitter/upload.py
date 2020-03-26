@@ -18,8 +18,7 @@ def upload_dict(dictObj, api):
                             api.store_data(key, tweet, [str(time), str(keyword), str(tweet["id"])])
                             
 
-
-def main():
+def upload():
     data_list = []
     firebase = firebaseAPI(firebaseConfig)
     for dir in glob.glob('./[0-9]*-[0-9]*-[0-9]*-[0-9]*'):
@@ -39,7 +38,4 @@ def main():
         data_list.append(time_col)
     data_col = {"tweets" : data_list}
     upload_dict(data_col, firebase)
-        
-
-main()
         
