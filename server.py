@@ -15,7 +15,7 @@ import os
 # set the project root directory as the static folder, you can set others.
 app = Flask(__name__,
             static_url_path='',
-            static_folder='frontend/build')
+            static_folder='./frontend/build')
 
 
 @app.route('/api/wordcloud', methods=['get'])
@@ -23,7 +23,13 @@ def getWordCloud():
     """
     generate a wordcloud json and return to client
     """
-    new_wordcloud = {'hello': 10, 'yes': 9, 'foo': 8, 'bar': 7}
+    new_wordcloud = {'words': [
+        {'word': 'hello', 'weight': 10},
+        {'word': 'there', 'weight': 8},
+        {'word': 'foo', 'weight': 6},
+        {'word': 'bar', 'weight': 4},
+        {'word': 'yes', 'weight': 2}
+    ]}
     print(json.dumps(new_wordcloud))
     return json.dumps(new_wordcloud)
 
@@ -37,4 +43,4 @@ def index():
 
 
 if __name__ == "__main__":
-    app.run(port=3000)
+    app.run(port=9000)
