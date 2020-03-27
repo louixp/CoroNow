@@ -6,7 +6,7 @@ This is the react package to create a webpage displaying data processed by CoroN
 
 ### Word Cloud
 
-The word cloud will be implemented with matters.js, a javascript physics library that supports various physical attributes. We'll primarily focus on building a ball pool with inverted gravity, with each ball indicating the position of a word. Sizes of balls will be determined by how hot this word is in the latest scraping.  
+Use react-wordcloud package to create a responsive, callback-able wordcloud.  
 
 ### Word Trend
 

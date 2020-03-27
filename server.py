@@ -24,11 +24,11 @@ def getWordCloud():
     generate a wordcloud json and return to client
     """
     new_wordcloud = {'words': [
-        {'word': 'hello', 'weight': 10},
-        {'word': 'there', 'weight': 8},
-        {'word': 'foo', 'weight': 6},
-        {'word': 'bar', 'weight': 4},
-        {'word': 'yes', 'weight': 2}
+        {'text': 'hello', 'value': 10},
+        {'text': 'there', 'value': 8},
+        {'text': 'foo', 'value': 6},
+        {'text': 'bar', 'value': 4},
+        {'text': 'yes', 'value': 2}
     ]}
     print(json.dumps(new_wordcloud))
     return json.dumps(new_wordcloud)
