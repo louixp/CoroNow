@@ -11,6 +11,7 @@ api routes:
 from flask import Flask, request, Response
 import json
 import os
+import random
 
 # set the project root directory as the static folder, you can set others.
 app = Flask(__name__,
@@ -23,14 +24,15 @@ def getWordCloud():
     """
     generate a wordcloud json and return to client
     """
-    new_wordcloud = {'words': [
-        {'text': 'hello', 'value': 10},
-        {'text': 'there', 'value': 8},
-        {'text': 'foo', 'value': 6},
-        {'text': 'bar', 'value': 4},
-        {'text': 'yes', 'value': 2}
-    ]}
-    print(json.dumps(new_wordcloud))
+    new_wordcloud = {'words': []}
+
+    for i in range(0,30):
+        new_wordcloud['words'].append({
+            'text': 'hello',
+            'value': random.randrange(1, 100, 1)
+        })
+
+    print(json.dumps(new_wordcloud, indent=2))
     return json.dumps(new_wordcloud)
 
 
