@@ -2,27 +2,32 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import ReactWordcloud from 'react-wordcloud';
-import { Resizable } from 're-resizable';
 
-const resizeStyle = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    border: 'solid 1px #ddd',
-    background: '#f0f0f0',
+// function Word(props) {
+//     let size_str = (5*props.weight).toString() + "px";
+//     let style_obj = {
+//         fontSize: size_str,
+//         padding: "0px",
+//     };
+//     console.log(size_str)
+//     return <button id="word_cloud_bubble" style={style_obj}>{props.text}</button>;
+// } 
+
+const wordcloud_options = {
+    colors: ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b'],
+    enableTooltip: false,
+    deterministic: false,
+    fontFamily: 'impact',
+    fontSizes: [5, 60],
+    fontStyle: 'normal',
+    fontWeight: 'normal',
+    padding: 1,
+    rotations: 3,
+    rotationAngles: [0, 90],
+    scale: 'sqrt',
+    spiral: 'archimedean',
+    transitionDuration: 1000,
   };
-
-
-function Word(props) {
-    let size_str = (5*props.weight).toString() + "px";
-    let style_obj = {
-        fontSize: size_str,
-        padding: "0px",
-    };
-    console.log(size_str)
-    return <button id="word_cloud_bubble" style={style_obj}>{props.text}</button>;
-} 
-
 
 // wordcloud window, a div element, containing a bunch of words
 class WordCloud extends React.Component {
@@ -63,25 +68,15 @@ class WordCloud extends React.Component {
     render() {
         if (this.state.state === "init") {
             return (
-                <div>
-                    <Word text='nothing here'/>
-                </div>
+                <p>Data not loaded</p>
             )
         }
         else if (this.state.state === "display") {
             return (
-                <div>
-                <p>Resize the container!</p>
-                    <Resizable
-                        defaultSize={{
-                        width: 600,
-                        height: 300,
-                        }}
-                        style={resizeStyle}>
-                        <div style={{ width: '100%', height: '100%' }}>
-                            <ReactWordcloud words={this.state.words} />
-                        </div>
-                    </Resizable>
+                <div style={{width: '100%', height: '100%'}}>
+                    <div style={{ width: '100%', height: '100%' }} id='word-cloud-container'>
+                        <ReactWordcloud words={this.state.words} options={wordcloud_options} />
+                    </div>
                 </div>
             )
         }
@@ -101,7 +96,9 @@ class Main extends React.Component {
     render() {
         if (this.state.state === "init") {
             return (
-                <WordCloud />
+                <div style={{width: '100%', height: '100%'}}>
+                    <WordCloud />
+                </ div>
             );
         }
     }
