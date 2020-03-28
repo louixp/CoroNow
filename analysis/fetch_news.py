@@ -1,4 +1,4 @@
-from utils.utils import check_date, change_date, compare_date
+from utils.utils import check_date, change_date, compare_date, calculate_time, save_date
 from config import news_datefile, newsquerydb
 import pickle
 
@@ -7,6 +7,7 @@ import pickle
 
 
 def fetch_news(firebase, start_time=[], end_time=check_date(), keyword="Coronavirus", entry="content"):
+    return_list = []
     if start_time == []:
         start_time = change_date(end_time, hour=-1)
     if calculate_time(news_datefile) >= 60:
@@ -28,11 +29,19 @@ def fetch_news(firebase, start_time=[], end_time=check_date(), keyword="Coronavi
         if compare_date(data_time, start_time) == "Greater" and compare_date(data_time, end_time) == "Less":
             print("News fetched by NEWSAPI at {0}".format(key))
             data = news.val()
-            current_news = data[keyword]
-            current_news_arr = []
-            for time_key in current_news.keys():
-                try:
-                    current_news_arr.append(current_news[time_key][entry])
-                except:
-                    pass
-            print(current_news_arr)
+            try:
+                current_news = data[keyword]
+                current_news_arr = []
+                for time_key in current_news.keys():
+                    try:
+                        if entry != "":
+                            current_news_arr.append(
+                                current_news[time_key][entry])
+                        else:
+                            current_news_arr.append(current_news[time_key])
+                    except:
+                        pass
+            except KeyError:
+                pass
+            return_list.extend(current_news_arr)
+    return return_list

@@ -7,6 +7,7 @@ import pickle
 
 
 def fetch_tweets(firebase, start_time=[], end_time=check_date(), keyword="Coronavirus", entry="tweet"):
+    return_list = []
     if start_time == []:
         start_time = change_date(end_time, hour=-1)
     if calculate_time(tweet_datefile) >= 60:
@@ -35,4 +36,5 @@ def fetch_tweets(firebase, start_time=[], end_time=check_date(), keyword="Corona
                     current_tweets_arr.append(current_tweets[id_key][entry])
                 except:
                     pass
-            print(current_tweets_arr)
+            return_list.extend(current_tweets_arr)
+    return return_list
