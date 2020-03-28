@@ -37,7 +37,7 @@ const wordcloud_options = {
     enableTooltip: true,
     deterministic: false,
     fontFamily: "helvetica",
-    fontSizes: [5, 60],
+    fontSizes: [10, 70],
     fontStyle: "normal",
     fontWeight: "normal",
     padding: 1,
@@ -71,11 +71,6 @@ class WordCloud extends React.Component {
         })
             .then(res => res.json())
             .then(res => {
-                // let new_words = [];
-                // res.words.forEach(el => {
-                //     new_words.push(el);
-                // });
-                // console.log(new_words);
                 console.log(res.words);
                 this.setState({
                 state: "display",

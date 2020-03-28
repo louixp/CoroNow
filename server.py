@@ -26,9 +26,15 @@ def getWordCloud():
     """
     new_wordcloud = {'words': []}
 
-    for i in range(0,30):
+    for i in range(0,70):
         new_wordcloud['words'].append({
             'text': 'hello',
+            'value': random.randrange(1, 100, 1)
+        })
+    
+    for i in range(0,70):
+        new_wordcloud['words'].append({
+            'text': 'world',
             'value': random.randrange(1, 100, 1)
         })
 
