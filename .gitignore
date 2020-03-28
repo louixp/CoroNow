@@ -5,4 +5,4 @@ credential.py
 .venv/
 __pycache__/
 data/
-
+.trash/
