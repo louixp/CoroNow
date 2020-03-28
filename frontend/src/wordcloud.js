@@ -21,12 +21,12 @@ const wordcloud_options = {
   enableTooltip: true,
   deterministic: true,
   fontFamily: "helvetica",
-  fontSizes: [10, 60],
+  fontSizes: [20, 70],
   fontStyle: "normal",
-  fontWeight: "normal",
+  fontWeight: "bold",
   padding: 1,
   rotations: 2,
-  rotationAngles: [0, 90],
+  rotationAngles: [-45, 45],
   scale: "sqrt",
   spiral: "archimedean",
   transitionDuration: 500
@@ -40,6 +40,21 @@ class WordCloud extends React.Component {
       state: "init",
       words: props.words
     };
+  }
+
+  componentWillMount() {
+    this.resize();
+    window.addEventListener("resize", this.resize.bind(this));
+    window.addEventListener("fullscreenchange", this.resize.bind(this));
+  }
+
+  resize() {
+    var innerWidth = window.innerWidth;
+    console.log(innerWidth);
+    if (innerWidth < 500) wordcloud_options.fontSizes = [21, 56];
+    else if (innerWidth < 1200) wordcloud_options.fontSizes = [24, 64];
+    else if (innerWidth < 2000) wordcloud_options.fontSizes = [30, 80];
+    else wordcloud_options.fontSizes = [30, 90];
   }
 
   shouldComponentUpdate(newProps, newStates) {

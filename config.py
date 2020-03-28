@@ -5,6 +5,7 @@ tweet_datefile = "./analysis/tweet_date.json"
 news_datefile = "./analysis/news_date.json"
 newsquerydb = "./data/query_news.plk"
 tweetquerydb = "./data/query_tweets.plk"
+wordquerydb = "./data/worddb.json"
 firebaseConfig = {
     "apiKey": "AIzaSyD0e6NAyxUI5Z8rs1j2ahwCwpG2HptFg-o",
     "authDomain": "coronow-d737d.firebaseapp.com",

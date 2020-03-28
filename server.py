@@ -11,9 +11,11 @@ api routes:
 from flask import Flask, request, Response
 from analysis.fetch_news import fetch_news
 from utils.firebase import firebaseAPI
-from config import firebaseConfig, keywords, mapping
+from config import firebaseConfig, keywords, mapping, wordquerydb
 from news.news import NewsAPI
 from news.handle import search_news
+from utils.utils import format_date
+from analysis.count_word import word_count
 import json
 import os
 import random
@@ -30,18 +32,28 @@ def getWordCloud():
     """
     generate a wordcloud json and return to client
     """
+    worddb = open(wordquerydb, "r")
+    print("Word data opened for reading")
+    wordcloud_data = json.load(worddb)
+    worddb.close()
+    print("Word data closed for reading")
+    date_str = format_date(4)
+    word_list = []
+    if date_str not in wordcloud_data.keys():
+        word_list, maxfreq = word_count(firebase)
+        wordcloud_data[date_str] = word_list
+        worddb = open(wordquerydb, "w")
+        print("Word data opened for writing")
+        json.dump(wordcloud_data, worddb)
+        worddb.close()
+        print("Word data closed for writing")
+    else:
+        word_list = wordcloud_data[date_str]
     new_wordcloud = {'words': []}
-
-    for i in range(0, 70):
-        new_wordcloud['words'].append({
-            'text': 'hello',
-            'value': random.randrange(1, 100, 1)
-        })
-
-    for i in range(0, 70):
-        new_wordcloud['words'].append({
-            'text': 'world',
-            'value': random.randrange(1, 100, 1)
+    for word in word_list:
+        new_wordcloud["words"].append({
+            'text': word["word"].upper(),
+            'value': int((word["frequency"]+50)/2)
         })
 
     print(json.dumps(new_wordcloud, indent=2))
