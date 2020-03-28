@@ -38,9 +38,13 @@ def save_date(_file=datefile):
     f.close()
 
 
-def format_date():
+def format_date(entry_len=5):
     date = check_date()
-    return "{0}-{1}-{2}-{3}-{4}".format(date[0], date[1], date[2], date[3], date[4])
+    datestr = ""
+    for i in range(entry_len-1):
+        datestr += (str(date[i]) + "-")
+    datestr += (str(date[entry_len-1]))
+    return datestr
 
 
 def load_date(_file=datefile):
