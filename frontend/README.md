@@ -7,10 +7,13 @@ This is the react package to create a webpage displaying data processed by CoroN
 ### Word Cloud
 
 Use react-wordcloud package to create a responsive, callback-able wordcloud.  
+NOTES
+
+* big font size may lead to severe performance drop  
 
 ### Word Trend
 
-TODO
+Use react-bootstrap to create an overlay component displaying trend information.  
 
 ### Sentiments
 
