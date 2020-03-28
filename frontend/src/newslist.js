@@ -7,7 +7,8 @@ class Newslist extends React.Component {
     super(props);
     this.state = {
       search_text: "",
-      item_length: 3
+      item_length: 3,
+      news_data: []
     };
   }
 
@@ -34,99 +35,27 @@ class Newslist extends React.Component {
     });
   }
 
+  async search() {
+    var esc = encodeURIComponent;
+    var url = "/news_list" + "?question=" + esc(this.state.search_text);
+    await fetch(url, {
+      method: "GET",
+      cache: "no-cache",
+      headers: {
+        "Content-type": "application/json"
+      },
+      redirect: "follow"
+    })
+      .then(res => res.json())
+      .then(res => {
+        this.setState({
+          news_data: res
+        });
+      });
+  }
+
   render() {
-    var news_data = [
-      {
-        title: "Title will be here",
-        description:
-          "This is a demonstration of how description will be displayed on the screen",
-        imageUrl: search_icon
-      },
-      {
-        title: "Title will be here",
-        description:
-          "This is a demonstration of how description will be displayed on the screen",
-        imageUrl: search_icon
-      },
-      {
-        title: "Title will be here",
-        description:
-          "This is a demonstration of how description will be displayed on the screen",
-        imageUrl: search_icon
-      },
-      {
-        title: "Title will be here",
-        description:
-          "This is a demonstration of how description will be displayed on the screen",
-        imageUrl: search_icon
-      },
-      {
-        title: "Title will be here",
-        description:
-          "This is a demonstration of how description will be displayed on the screen",
-        imageUrl: search_icon
-      },
-      {
-        title: "Title will be here",
-        description:
-          "This is a demonstration of how description will be displayed on the screen",
-        imageUrl: search_icon
-      },
-      {
-        title: "Title will be here",
-        description:
-          "This is a demonstration of how description will be displayed on the screen",
-        imageUrl: search_icon
-      },
-      {
-        title: "Title will be here",
-        description:
-          "This is a demonstration of how description will be displayed on the screen",
-        imageUrl: search_icon
-      },
-      {
-        title: "Title will be here",
-        description:
-          "This is a demonstration of how description will be displayed on the screen",
-        imageUrl: search_icon
-      },
-      {
-        title: "Title will be here",
-        description:
-          "This is a demonstration of how description will be displayed on the screen",
-        imageUrl: search_icon
-      },
-      {
-        title: "Title will be here",
-        description:
-          "This is a demonstration of how description will be displayed on the screen",
-        imageUrl: search_icon
-      },
-      {
-        title: "Title will be here",
-        description:
-          "This is a demonstration of how description will be displayed on the screen",
-        imageUrl: search_icon
-      },
-      {
-        title: "Title will be here",
-        description:
-          "This is a demonstration of how description will be displayed on the screen",
-        imageUrl: search_icon
-      },
-      {
-        title: "Title will be here",
-        description:
-          "This is a demonstration of how description will be displayed on the screen",
-        imageUrl: search_icon
-      },
-      {
-        title: "Title will be here",
-        description:
-          "This is a demonstration of how description will be displayed on the screen",
-        imageUrl: search_icon
-      }
-    ];
+    var news_data = this.state.news_data;
     var render_list = [];
     if (news_data == []) {
     } else {
@@ -135,7 +64,8 @@ class Newslist extends React.Component {
           key={index}
           title={item.title}
           description={item.description}
-          imageUrl={item.imageUrl}
+          imageUrl={item.urlToImage}
+          url={item.url}
         />
       ));
       for (let i = 0; i < item_list.length; i += this.state.item_length) {
@@ -162,7 +92,7 @@ class Newslist extends React.Component {
               value={this.state.search_text}
               onChange={this.update_text.bind(this)}
             />
-            <div id="search_icon">
+            <div id="search_icon" onClick={this.search.bind(this)}>
               <img src={search_icon} alt="Search" />
             </div>
           </div>
@@ -178,14 +108,20 @@ class Newsitem extends React.Component {
     return (
       <div className="news_items">
         <div className="news_frame">
-          <img
-            className="news_image"
-            src={this.props.imageUrl}
-            alt="Not avaliable"
-          />
+          <a href={this.props.url}>
+            <img
+              className="news_image"
+              src={this.props.imageUrl}
+              alt="Not avaliable"
+            />
+          </a>
         </div>
-        <div className="news_title">{this.props.title}</div>
-        <div className="news_desc">{this.props.description}</div>
+        <div className="news_title">
+          <p>{this.props.title}</p>
+        </div>
+        <div className="news_desc">
+          <p>{this.props.description}</p>
+        </div>
       </div>
     );
   }
