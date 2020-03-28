@@ -11,6 +11,8 @@ NOTES
 
 * big font size may lead to severe performance drop  
 
+* gery out the background when a overlay window is in action ([resource](https://stackoverflow.com/questions/9843556/how-to-grey-out-a-box-in-css/9844497>))  
+
 ### Word Trend
 
 Use react-bootstrap to create an overlay component displaying trend information.  
