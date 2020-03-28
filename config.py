@@ -1,6 +1,10 @@
 apikey = "84f75d747e4f43e48803000bc81dc930"
 database = "./data/source.json"
 datefile = "./utils/data.json"
+tweet_datefile = "./analysis/tweet_date.json"
+news_datefile = "./analysis/news_date.json"
+newsquerydb = "./data/query_news.plk"
+tweetquerydb = "./data/query_tweets.plk"
 firebaseConfig = {
     "apiKey": "AIzaSyD0e6NAyxUI5Z8rs1j2ahwCwpG2HptFg-o",
     "authDomain": "coronow-d737d.firebaseapp.com",
