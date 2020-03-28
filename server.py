@@ -9,6 +9,9 @@ api routes:
 """
 
 from flask import Flask, request, Response
+from analysis.fetch_news import fetch_news
+from utils.firebase import firebaseAPI
+from config import firebaseConfig, keywords
 import json
 import os
 import random
@@ -17,6 +20,7 @@ import random
 app = Flask(__name__,
             static_url_path='',
             static_folder='./frontend/build')
+firebase = firebaseAPI(firebaseConfig)
 
 
 @app.route('/api/wordcloud', methods=['get'])
@@ -26,13 +30,13 @@ def getWordCloud():
     """
     new_wordcloud = {'words': []}
 
-    for i in range(0,70):
+    for i in range(0, 70):
         new_wordcloud['words'].append({
             'text': 'hello',
             'value': random.randrange(1, 100, 1)
         })
-    
-    for i in range(0,70):
+
+    for i in range(0, 70):
         new_wordcloud['words'].append({
             'text': 'world',
             'value': random.randrange(1, 100, 1)
@@ -40,6 +44,36 @@ def getWordCloud():
 
     print(json.dumps(new_wordcloud, indent=2))
     return json.dumps(new_wordcloud)
+
+
+@app.route('/news_list', methods=["GET"])
+def getNewsList():
+    question = request.args.get("question")
+    print("New Search: {0}".format(question))
+    search_words = question.split(" ")
+    feedback = []
+    for keyword in search_words:
+        if keyword in keywords:
+            news_list = fetch_news(firebase, start_time=[
+                0, 0, 0, 0, 0], keyword=keyword, entry="")
+            print(news_list)
+            if news_list != None:
+                feedback.extend(news_list)
+    res = []
+    [res.append(x) for x in feedback if x not in res]
+    for res_ele in res:
+        isValid = True
+        for essential_key in ['description', 'title', 'url', 'urlToImage']:
+            if essential_key not in res_ele:
+                res.remove(res_ele)
+                isValid = False
+                break
+        if not isValid:
+            continue
+        for extra_key in ['content', 'publishedAt', 'source', 'author']:
+            if extra_key in res_ele:
+                del res_ele[extra_key]
+    return json.dumps(res)
 
 
 @app.route('/')
