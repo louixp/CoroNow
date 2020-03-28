@@ -15,6 +15,7 @@ def main(source=2, mode=2):
     newsapi = NewsAPI()
     while(True):
         if calculate_time() >= 60:
+            save_date()
             if source == 2 or source == 0:
                 print("\n== Newsapi started ==\n")
                 news_init(firebase, newsapi)
@@ -23,7 +24,6 @@ def main(source=2, mode=2):
                 print("\n== Twint started ==\n")
                 twitter_init(firebase, mode)
                 print("\n== Twint finished ==\n")
-            save_date()
         else:
             date = format_date()
             print("\n== Waiting at {0} ==\n".format(date))
