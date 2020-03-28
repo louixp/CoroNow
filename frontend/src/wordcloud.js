@@ -64,10 +64,7 @@ class WordCloud extends React.Component {
     if (this.state.state === "init") {
       return (
         <div
-          style={{
-            width: this.props.width,
-            height: this.props.height
-          }}
+          style={this.props.style}
         >
           <ReactWordcloud
             words={this.props.words}
