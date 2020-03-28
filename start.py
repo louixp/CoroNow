@@ -4,6 +4,8 @@ from utils.firebase import firebaseAPI
 from utils.utils import calculate_time, format_date, save_date
 from news.news import NewsAPI
 from config import firebaseConfig
+from analysis.fetch_news import fetch_news
+from analysis.fetch_tweets import fetch_tweets
 import time
 
 
