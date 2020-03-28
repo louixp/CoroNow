@@ -41,7 +41,7 @@ def fetch_news(firebase, start_time=[], end_time=check_date(), keyword="Coronavi
                             current_news_arr.append(current_news[time_key])
                     except:
                         pass
+                return_list.extend(current_news_arr)
             except KeyError:
                 pass
-            return_list.extend(current_news_arr)
     return return_list

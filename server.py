@@ -11,7 +11,9 @@ api routes:
 from flask import Flask, request, Response
 from analysis.fetch_news import fetch_news
 from utils.firebase import firebaseAPI
-from config import firebaseConfig, keywords
+from config import firebaseConfig, keywords, mapping
+from news.news import NewsAPI
+from news.handle import search_news
 import json
 import os
 import random
@@ -46,21 +48,7 @@ def getWordCloud():
     return json.dumps(new_wordcloud)
 
 
-@app.route('/news_list', methods=["GET"])
-def getNewsList():
-    question = request.args.get("question")
-    print("New Search: {0}".format(question))
-    search_words = question.split(" ")
-    feedback = []
-    for keyword in search_words:
-        if keyword in keywords:
-            news_list = fetch_news(firebase, start_time=[
-                0, 0, 0, 0, 0], keyword=keyword, entry="")
-            print(news_list)
-            if news_list != None:
-                feedback.extend(news_list)
-    res = []
-    [res.append(x) for x in feedback if x not in res]
+def trim_news(res):
     for res_ele in res:
         isValid = True
         for essential_key in ['description', 'title', 'url', 'urlToImage']:
@@ -73,6 +61,31 @@ def getNewsList():
         for extra_key in ['content', 'publishedAt', 'source', 'author']:
             if extra_key in res_ele:
                 del res_ele[extra_key]
+    return res
+
+
+@app.route('/news_list', methods=["GET"])
+def getNewsList():
+    question = request.args.get("question")
+    print("New Search: {0}".format(question))
+    search_words = question.split(" ")
+    feedback = []
+    for search_word in search_words:
+        for keyword in mapping.keys():
+            if search_word.lower() in mapping[keyword]:
+                news_list = fetch_news(firebase, start_time=[
+                    0, 0, 0, 0, 0], keyword=keyword, entry="")
+                print(news_list)
+                if news_list != None:
+                    feedback.extend(news_list)
+    res = []
+    [res.append(x) for x in feedback if x not in res]
+    if res == []:
+        newsapi = NewsAPI()
+        for search_word in search_words:
+            res.extend(search_news("us", None, search_word, newsapi))
+    res = trim_news(res)
+    print("Return data: {0}".format(res))
     return json.dumps(res)
 
 
