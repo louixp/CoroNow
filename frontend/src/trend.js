@@ -7,7 +7,7 @@ import Button from "react-bootstrap/Button";
 
 class Trend extends React.Component {
   // props: enable, text, handleClose
-  constructor({ props }) {
+  constructor(props) {
     super(props);
     this.state = {
       state: "init"

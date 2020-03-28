@@ -4,6 +4,7 @@ import "./index.css";
 import "bootstrap/dist/css/bootstrap.css"; // this file is required for Modal to work
 import WordCloud from "./wordcloud.js";
 import Trend from "./trend.js";
+import Newslist from "./newslist.js";
 
 // main frame of home page
 class Main extends React.Component {
@@ -81,14 +82,15 @@ class Main extends React.Component {
           ver={this.state.word_list_version}
           height={this.state.wordcloud_height}
           width={this.state.wordcloud_width}
-        />{" "}
+        />
         <Trend
           enable={trend_enable}
           text={this.state.overlay_text}
           handleClose={() => {
             this.deactivateTrend();
           }}
-        />{" "}
+        />
+        <Newslist />
       </div>
     );
   }

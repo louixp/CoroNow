@@ -1,9 +1,41 @@
-html, body {
-    height: 100%;
-    width: 100%;
-    margin: 0px;
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
 }
 
-#root {
-    height: 100%;
+/* Hide Scroll Bar */
+/* Chrome*/
+body::-webkit-scrollbar {
+  display: none;
+}
+/* IE*/
+body {
+  -ms-overflow-style: none;
+}
+
+/* Column flex center div */
+#news_list,
+#search_div,
+#content_div,
+.news_items {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Row flex center div */
+#search_bar,
+#search_icon,
+.item_row {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
 }
