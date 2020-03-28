@@ -1,0 +1,120 @@
+/* Font style */
+@import url(https://fonts.googleapis.com/css?family=Raleway:wght@800&display=swap&effect=3d);
+
+/* Static dimensions */
+/* Title font size */
+#search_title {
+  font-size: 40px;
+  font-family: "Raleway", sans-serif;
+}
+/* Big input font size */
+#search_input {
+  font-size: 25px;
+  font-family: "Raleway", sans-serif;
+}
+
+/* Big Text font size */
+
+.news_title {
+  font-size: 20px;
+  font-family: "Raleway", sans-serif;
+  font-weight: bold;
+}
+/* Small Text font size */
+.news_desc {
+  font-size: 10px;
+  font-family: "Raleway", sans-serif;
+}
+
+/* Style for Newslist */
+#news_list {
+  justify-content: flex-start;
+  background-color: rgb(153, 153, 255);
+  height: auto;
+  min-height: 100%;
+  width: 100%;
+}
+
+/* Style for searchbar */
+
+#search_div {
+  width: 100%;
+  height: 200px;
+  background-color: rgb(238, 138, 138);
+}
+
+#search_bar {
+  width: 100%;
+}
+
+#search_icon {
+  height: 50px;
+  width: 50px;
+  box-shadow: 0px 0px 5px black;
+  border-radius: 10px;
+}
+
+#search_icon:hover {
+  box-shadow: 0px 0px 5px black inset;
+}
+
+#search_input {
+  margin: 10px;
+  width: 50%;
+  height: 50px;
+  border: none;
+  padding: 5px;
+  box-shadow: 0px 0px 5px black;
+  border-radius: 10px;
+}
+
+#search_input:hover {
+  box-shadow: 0px 0px 5px black inset;
+}
+
+#search_icon img {
+  width: 80%;
+  height: 80%;
+}
+
+/* Style for item list */
+#content_div {
+  width: 100%;
+  height: auto;
+  align-items: flex-start;
+}
+
+.item_row {
+  width: 100%;
+}
+
+.news_items {
+  width: 200px;
+  height: 200px;
+  margin: 50px;
+  background-color: lightcoral;
+  box-shadow: 0px 0px 5px black;
+  border-radius: 10px;
+}
+
+.news_title {
+  width: 100%;
+  height: 30px;
+}
+
+.news_frame {
+  width: 100%;
+  height: 100px;
+  overflow: hidden;
+}
+
+.news_image {
+  width: 200px;
+  height: auto;
+  transform: translateY(-25%);
+}
+
+.news_desc {
+  width: 100%;
+  height: 70px;
+}
