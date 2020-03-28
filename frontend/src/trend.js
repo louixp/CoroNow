@@ -21,18 +21,14 @@ class Trend extends React.Component {
                 <Modal 
                     show={this.props.enable} 
                     onHide={this.props.handleClose} 
-                    animation={true}
+                    animation={false}
+                    size="xl"
                     centered
                 >
                     <Modal.Header closeButton>
-                        <Modal.Title>Trend</Modal.Title>
+                        <Modal.Title>Trend of "{this.props.text.toUpperCase()}" over Past 24 Hours</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>{this.props.text}</Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={this.props.handleClose}>
-                            Close
-                        </Button>
-                    </Modal.Footer>
                 </Modal>
             );
 

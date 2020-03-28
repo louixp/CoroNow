@@ -64,7 +64,7 @@ class WordCloud extends React.Component {
         console.log("wordcloud render");
         if (this.state.state === "init") {
             return (
-                <div style={{ width: "100%", height: "100%" }}>
+                <div style={{ width: this.props.width, height: this.props.height }}>
                     <div
                         style={{ width: "100%", height: "100%" }}
                         id="word-cloud-container"

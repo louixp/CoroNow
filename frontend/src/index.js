@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import 'bootstrap/dist/css/bootstrap.min.css'; // this file is required for Modal to work
+import 'bootstrap/dist/css/bootstrap.css'; // this file is required for Modal to work
 import WordCloud from "./wordcloud.js";
 import Trend from "./trend.js";
 
@@ -13,7 +13,9 @@ class Main extends React.Component {
             state: "init", // states: init, trend
             overlay_text: "",
             word_list_version: 0, // if there's need to update word list, increment this variable to notify wordcloud re-render
-            word_list: [],
+            words: [],
+            wordcloud_height: "100%", // edit these 2 states to control wordcloud width and height
+            wordcloud_width: "100%",
         };
         this.getWordList();
     }
@@ -33,7 +35,7 @@ class Main extends React.Component {
                 console.log(res.words);
                 this.setState({
                     word_list_version: this.state.word_list_version + 1,
-                    word_list: res.words,
+                    words: res.words,
                 });
             });
     }
@@ -68,11 +70,13 @@ class Main extends React.Component {
         console.log("main render");
 
         return (
-            <div style={{ width: "100%", height: "100%" }}>
+            <div style={{ width: "100%", height: "100%" }} id="main-div">
                 <WordCloud 
                     onWordClick={(text)=> this.activateTrend(text)} 
-                    words={this.state.word_list} 
+                    words={this.state.words} 
                     ver={this.state.word_list_version}
+                    height={this.state.wordcloud_height}
+                    width={this.state.wordcloud_width}
                 />
                 <Trend 
                     enable={trend_enable} 
