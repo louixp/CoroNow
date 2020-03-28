@@ -58,6 +58,8 @@ class Newslist extends React.Component {
     var news_data = this.state.news_data;
     var render_list = [];
     if (news_data == []) {
+      console.log("here");
+      render_list = <div id="error_msg">No Result Found</div>;
     } else {
       const item_list = news_data.map((item, index) => (
         <Newsitem
