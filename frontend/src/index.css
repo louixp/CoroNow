@@ -9,11 +9,11 @@ body,
 
 /* Hide Scroll Bar */
 /* Chrome*/
-body::-webkit-scrollbar {
+body::-webkit-scrollbar, div::-webkit-scrollbar {
   display: none;
 }
 /* IE*/
-body {
+body, div {
   -ms-overflow-style: none;
 }
 
@@ -38,4 +38,8 @@ body {
   text-align: center;
   align-items: center;
   justify-content: center;
+}
+
+div.side-bar-content {
+  height: 100%;
 }
