@@ -5,6 +5,7 @@ import "bootstrap/dist/css/bootstrap.css"; // this file is required for Modal to
 import WordCloud from "./wordcloud.js";
 import Trend from "./trend.js";
 import Newslist from "./newslist.js";
+import Nav from "./nav.js";
 
 // main frame of home page
 class Main extends React.Component {
@@ -91,6 +92,7 @@ class Main extends React.Component {
           }}
         />
         <Newslist />
+        <Nav />
       </div>
     );
   }
