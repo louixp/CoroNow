@@ -7,17 +7,16 @@ import { select } from "d3-selection";
 import Overlay from "react-bootstrap/Overlay";
 
 class Trend extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            state: "init",
-        };
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      state: "init"
+    };
+  }
 
-    render() {
-        if (this.state.state === "init") {
-            // render an overlay
-            
-        }
+  render() {
+    if (this.state.state === "init") {
+      // render an overlay
     }
+  }
 }
