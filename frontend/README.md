@@ -11,11 +11,14 @@ NOTES
 
 * big font size may lead to severe performance drop  
 
-* gery out the background when a overlay window is in action ([resource](https://stackoverflow.com/questions/9843556/how-to-grey-out-a-box-in-css/9844497>))  
+* shouldComponentUpdate() method is buggy, need to move wordcloud update method to Main component to control wordcloud version  
 
 ### Word Trend
 
-Use react-bootstrap to create an overlay component displaying trend information.  
+Use react-bootstrap to create an Modal component displaying trend information.  
+NOTES
+
+* when modal/overlay is rendered, wordcloud will also be re-rendered. should be solved by enforcing a will function.  
 
 ### Sentiments
 
