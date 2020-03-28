@@ -13,7 +13,29 @@ class Main extends React.Component {
             state: "init", // states: init, trend
             overlay_text: "",
             word_list_version: 0, // if there's need to update word list, increment this variable to notify wordcloud re-render
+            word_list: [],
         };
+        this.getWordList();
+    }
+
+    getWordList() {
+        // fetch a wordcloud json from backend server
+        fetch("/api/wordcloud", {
+            method: "GET",
+            cache: "no-cache",
+            headers: {
+                "Content-type": "application/json"
+            },
+            redirect: "follow"
+        })
+            .then(res => res.json())
+            .then(res => {
+                console.log(res.words);
+                this.setState({
+                    word_list_version: this.state.word_list_version + 1,
+                    word_list: res.words,
+                });
+            });
     }
 
     // callback function for word clicking, display a trend overlay window
@@ -40,10 +62,20 @@ class Main extends React.Component {
             trend_enable = true;
         }
 
+        console.log("main render");
+
         return (
             <div style={{ width: "100%", height: "100%" }}>
-                <WordCloud onWordClick={(text)=> this.activateTrend(text)} ver={this.state.word_list_version}/>
-                <Trend enable={trend_enable} text={this.state.overlay_text} handleClose={() => {this.deactivateTrend();}}/>
+                <WordCloud 
+                    onWordClick={(text)=> this.activateTrend(text)} 
+                    words={this.state.word_list} 
+                    ver={this.state.word_list_version}
+                />
+                <Trend 
+                    enable={trend_enable} 
+                    text={this.state.overlay_text} 
+                    handleClose={() => {this.deactivateTrend();}}
+                />
             </div>
         );
     }

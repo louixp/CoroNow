@@ -19,9 +19,9 @@ function wordCloudCallBack(callback_str) {
 const wordcloud_options = {
     colors: ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b"],
     enableTooltip: true,
-    deterministic: false,
+    deterministic: true,
     fontFamily: "helvetica",
-    fontSizes: [10, 70],
+    fontSizes: [10, 60],
     fontStyle: "normal",
     fontWeight: "normal",
     padding: 1,
@@ -38,14 +38,13 @@ class WordCloud extends React.Component {
         super(props);
         this.state = {
             state: "init",
-            words: [],
-            version: props.ver,
+            words: props.words,
         };
-        this.getWordCloud();
     }
 
-    shouldComponentUpdate(newProps) {
-        return (this.state.version !== newProps.ver)
+    shouldComponentUpdate(newProps, newStates) {
+        console.log("will update: " + (this.props.ver !== newProps.ver));
+        return (this.props.ver !== newProps.ver)
     }
 
     wordClickCallback(word) {
@@ -61,44 +60,23 @@ class WordCloud extends React.Component {
         onWordMouseOver: wordCloudCallBack('onWordMouseOver'),
     }
 
-    getWordCloud() {
-        // fetch a wordcloud json from backend server
-        fetch("/api/wordcloud", {
-            method: "GET",
-            cache: "no-cache",
-            headers: {
-                "Content-type": "application/json"
-            },
-            redirect: "follow"
-        })
-            .then(res => res.json())
-            .then(res => {
-                console.log(res.words);
-                this.setState({
-                state: "display",
-                words: res.words
-                });
-            });
-    }
-
     render() {
+        console.log("wordcloud render");
         if (this.state.state === "init") {
-        return <p>Data not loaded</p>;
-        } else if (this.state.state === "display") {
-        return (
-            <div style={{ width: "100%", height: "100%" }}>
-            <div
-                style={{ width: "100%", height: "100%" }}
-                id="word-cloud-container"
-            >
-                <ReactWordcloud
-                words={this.state.words}
-                options={wordcloud_options}
-                callbacks={this.wordCloudCallbacks}
-                />
-            </div>
-            </div>
-        );
+            return (
+                <div style={{ width: "100%", height: "100%" }}>
+                    <div
+                        style={{ width: "100%", height: "100%" }}
+                        id="word-cloud-container"
+                    >
+                        <ReactWordcloud
+                            words={this.props.words}
+                            options={wordcloud_options}
+                            callbacks={this.wordCloudCallbacks}
+                        />
+                    </div>
+                </div>
+            );
         }
     }
 }
