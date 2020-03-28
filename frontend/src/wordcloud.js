@@ -69,19 +69,11 @@ class WordCloud extends React.Component {
             height: this.props.height
           }}
         >
-          <div
-            style={{
-              width: "100%",
-              height: "100%"
-            }}
-            id="word-cloud-container"
-          >
-            <ReactWordcloud
-              words={this.props.words}
-              options={wordcloud_options}
-              callbacks={this.wordCloudCallbacks}
-            />{" "}
-          </div>{" "}
+          <ReactWordcloud
+            words={this.props.words}
+            options={wordcloud_options}
+            callbacks={this.wordCloudCallbacks}
+          />
         </div>
       );
     }
