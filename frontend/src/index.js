@@ -40,14 +40,17 @@ class Main extends React.Component {
 
     // callback function for word clicking, display a trend overlay window
     activateTrend(text) {
+        // fetch data here
         this.setState({
             state: "trend",
             overlay_text: text,
+            // add more data to pass in here
         });
     }
 
     // callback function for close window button on overlay, deactivate overlay window
     deactivateTrend() {
+        
         this.setState({
             state: "init",
         })
