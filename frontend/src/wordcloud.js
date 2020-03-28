@@ -10,27 +10,11 @@ function wordCloudCallBack(callback_str) {
         const element = event.target;
         const text = select(element);
         text
-          .on('click', () => {
-              if (isActive) {
-                  // window.open(`https://duckduckgo.com/?q=${word.text}`, '_blank');
-                  // TODO: add a function to display trend line of this word
-                  alert(word.text);
-              }
-          })
           .transition()
           // .attr('background', 'white')
           .attr('text-decoration', isActive ? 'underline' : 'none');
     };
 }
-
-const callbacks = {
-    // getWordColor: word => (word.value > 50 ? 'orange' : 'purple'),
-    getWordTooltip: word =>
-        `See the trend of "${word.text}" on social media`,
-    onWordClick: wordCloudCallBack('onWordClick'),
-    onWordMouseOut: wordCloudCallBack('onWordMouseOut'),
-    onWordMouseOver: wordCloudCallBack('onWordMouseOver'),
-};
 
 const wordcloud_options = {
     colors: ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b"],
@@ -41,11 +25,11 @@ const wordcloud_options = {
     fontStyle: "normal",
     fontWeight: "normal",
     padding: 1,
-    rotations: 3,
+    rotations: 2,
     rotationAngles: [0, 90],
     scale: "sqrt",
     spiral: "archimedean",
-    transitionDuration: 1000
+    transitionDuration: 500
 };
 
 // wordcloud window, a div element, containing a bunch of words
@@ -53,10 +37,28 @@ class WordCloud extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-        state: "init",
-        words: []
+            state: "init",
+            words: [],
+            version: props.ver,
         };
         this.getWordCloud();
+    }
+
+    shouldComponentUpdate(newProps) {
+        return (this.state.version !== newProps.ver)
+    }
+
+    wordClickCallback(word) {
+        this.props.onWordClick(word);
+    }
+
+    wordCloudCallbacks = {
+        // getWordColor: word => (word.value > 50 ? 'orange' : 'purple'),
+        getWordTooltip: word =>
+            `See the trend of "${word.text}" on social media`,
+        onWordClick: (word, event)=>this.wordClickCallback(word.text),
+        onWordMouseOut: wordCloudCallBack('onWordMouseOut'),
+        onWordMouseOver: wordCloudCallBack('onWordMouseOver'),
     }
 
     getWordCloud() {
@@ -92,7 +94,7 @@ class WordCloud extends React.Component {
                 <ReactWordcloud
                 words={this.state.words}
                 options={wordcloud_options}
-                callbacks={callbacks}
+                callbacks={this.wordCloudCallbacks}
                 />
             </div>
             </div>

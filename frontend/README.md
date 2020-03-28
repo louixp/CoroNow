@@ -11,6 +11,8 @@ NOTES
 
 * big font size may lead to severe performance drop  
 
+* shouldComponentUpdate() method is buggy, need to move wordcloud update method to Main component to control wordcloud version  
+
 ### Word Trend
 
 Use react-bootstrap to create an Modal component displaying trend information.  
