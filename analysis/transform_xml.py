@@ -17,7 +17,7 @@ parser.add_argument('--noconfl',
 parser.add_argument('--istrain',
                     action='store_true',
                     default=False,
-                    help='If is a training set we split of 10% and output train_full, train_split, dev. Default is testset creating no split')
+                    help="If is a training set we split of 10 percent and output train_full, train_split, dev. Default is testset creating no split")
 
 parser.add_argument("--files",
                     type=str,
