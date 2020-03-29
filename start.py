@@ -14,8 +14,6 @@ import time
 def main(source=2, mode=2):
     firebase = firebaseAPI(firebaseConfig)
     newsapi = NewsAPI()
-    convert_to_XML(firebase, [2020, 3, 27, 22, 0])
-    '''
     while(True):
         if calculate_time() >= 60:
             save_date()
@@ -31,7 +29,6 @@ def main(source=2, mode=2):
             date = format_date()
             print("\n== Waiting at {0} ==\n".format(date))
         time.sleep(60)
-    '''
 
 
 if __name__ == "__main__":

@@ -74,13 +74,31 @@ class Main extends React.Component {
   // callback function for word clicking, display a trend overlay window
   activateTrend(text) {
     // fetch data here
-    if (this.state.trend_open === false) {
-      this.setState({
-        trend_open: true,
-        overlay_text: text
-        // add more data to pass in here
+    var that = this;
+    var esc = encodeURIComponent;
+    var url = "/trend" + "?word=" + esc(text);
+    fetch(url, {
+      method: "GET",
+      cache: "no-cache",
+      headers: {
+        "Content-type": "application/json"
+      },
+      redirect: "follow"
+    })
+      .then(res => res.json())
+      .then(res => {
+        if (that.state.trend_open === false) {
+          that.setState({
+            current_trend: res
+          });
+        }
+      })
+      .then(() => {
+        that.setState({
+          trend_open: true,
+          overlay_text: text
+        });
       });
-    }
   }
 
   // callback function for close window button on overlay, deactivate overlay window
@@ -135,6 +153,7 @@ class Main extends React.Component {
             handleClose={() => {
               this.deactivateTrend();
             }}
+            currentTrend={this.state.current_trend}
           />
           <Wordtrend />
           {/* <Newslist /> */}

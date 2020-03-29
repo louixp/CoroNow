@@ -6,6 +6,7 @@ var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 class Wordtrend extends React.Component {
   render() {
+    console.log(this.props.data);
     const data = {
       word: "Good",
       frequency: [
