@@ -13,11 +13,13 @@ body,
 
 /* Hide Scroll Bar */
 /* Chrome*/
-body::-webkit-scrollbar, div::-webkit-scrollbar {
+body::-webkit-scrollbar,
+div::-webkit-scrollbar {
   display: none;
 }
 /* IE*/
-body, div {
+body,
+div {
   -ms-overflow-style: none;
 }
 
@@ -25,7 +27,10 @@ body, div {
 #news_list,
 #search_div,
 #content_div,
-.news_items {
+.news_items,
+#nav_content,
+#nav_title,
+#nav_bar {
   display: flex;
   flex-direction: column;
   text-align: center;

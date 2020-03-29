@@ -33,7 +33,7 @@ class Wordtrend extends React.Component {
         title: {
           text: "Trend for word: " + data.word
         },
-        backgroundColor: "pink",
+        backgroundColor: "#eeeeee",
         axisX: {
           valueFormatString: "MMM.DD HH:00",
           lineThickness: 4

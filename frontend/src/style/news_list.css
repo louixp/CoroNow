@@ -10,7 +10,8 @@
   white-space: pre-wrap;
 }
 /* Big input font size */
-#search_input {
+#search_input,
+#nav_title {
   font-size: 25px;
   font-family: "Raleway", sans-serif;
   word-wrap: break-word;
@@ -19,7 +20,8 @@
 
 /* Big Text font size */
 
-.news_title {
+.news_title,
+#nav_content {
   font-size: 15px;
   font-family: "Raleway", sans-serif;
   font-weight: bold;

@@ -82,10 +82,10 @@ class Main extends React.Component {
 
   parentSideBar = (
     <Nav
-      onMouseLeave= {() => this.setSidebarClosed()}
+      onMouseLeave={() => this.setSidebarClosed()}
       style={{
         height: "100%",
-        width: "100%",
+        width: "100%"
       }}
       items={[
         {
@@ -99,10 +99,10 @@ class Main extends React.Component {
         {
           text: "SENTIMENTS",
           id: "sentiments"
-        },
+        }
       ]}
-      callbacks ={{
-        closeNav: ()=>this.setSidebarClosed()
+      callbacks={{
+        closeNav: () => this.setSidebarClosed()
       }}
     />
   );
