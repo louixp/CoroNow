@@ -1,6 +1,7 @@
 from news.init import news_init
 from twitter.scrape import twitter_init
 from utils.firebase import firebaseAPI
+from utils.clean_worddb import clean
 from utils.utils import calculate_time, format_date, save_date
 from news.news import NewsAPI
 from config import firebaseConfig
@@ -13,6 +14,8 @@ from analysis.transform_xml import main as transform_xml
 
 # source [0: newsapi, 1: twint, 2: both] | mode [0: fetch, 1: upload, 2: both]
 def main(source=2, mode=2):
+    clean(2020, 3, 29, 0)
+    '''
     firebase = firebaseAPI(firebaseConfig)
     newsapi = NewsAPI()
     while(True):
@@ -30,6 +33,7 @@ def main(source=2, mode=2):
             date = format_date()
             print("\n== Waiting at {0} ==\n".format(date))
         time.sleep(60)
+    '''
 
 
 if __name__ == "__main__":
