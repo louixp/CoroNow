@@ -20,9 +20,11 @@ class Main extends React.Component {
       overlay_text: "",
       word_list_version: 0, // if there's need to update word list, increment this variable to notify wordcloud re-render
       words: [],
-      current_trend: []
+      current_trend: [],
+      sentiment_list: {},
     };
     this.getWordList();
+    this.getSentiments();
   }
 
   getWordList() {
@@ -144,6 +146,27 @@ class Main extends React.Component {
     });
   }
 
+  // get sentiments
+  getSentiments() {
+    console.log("fetch sentiments data from backend")
+    // fetch a big object from server, with keys being category names
+    fetch("/api/sentiments", {
+      method: "GET",
+      cache: "no-cache",
+      headers: {
+        "Content-type": "application/json"
+      },
+      redirect: "follow"
+    })
+      .then(res => res.json())
+      .then(res => {
+        console.log(res.sentiments);
+        this.setState({
+          sentiment_list: res.sentiments
+        });
+      });
+  }
+
   render() {
     console.log("main render");
 
@@ -198,7 +221,7 @@ class Main extends React.Component {
                 currentTrend={this.state.current_trend}
               />
               <Newslist />
-              <Sentiments id="sentiments" />
+              <Sentiments id="sentiments" sentiment_list={this.state.sentiment_list} />
             </div>
           </Sidebar>
         </Sidebar>

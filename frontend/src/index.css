@@ -7,8 +7,13 @@ body,
   margin: 0;
 }
 
+/* disable scrolling in root div, but allow in sub div */
 #right-contents {
   overflow: hidden;
+}
+
+#sentiments {
+  overflow: auto;
 }
 
 /* Hide Scroll Bar */
