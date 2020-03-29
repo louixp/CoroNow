@@ -3,8 +3,9 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import "bootstrap/dist/css/bootstrap.css"; // this file is required for Modal to work
 import WordCloud from "./wordcloud.js";
-import Trend from "./trend.js";
+import Wordtrend from "./wordtrend.js";
 import Newslist from "./newslist.js";
+import Trend from "./trend.js";
 import Sidebar from "react-sidebar";
 import hover_menu from "./resources/hover_menu.png";
 
@@ -135,6 +136,7 @@ class Main extends React.Component {
               this.deactivateTrend();
             }}
           />
+          <Wordtrend />
           {/* <Newslist /> */}
         </Sidebar>
       </div>

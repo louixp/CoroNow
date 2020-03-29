@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^7.2.1",
     "animejs": "^3.1.0",
     "bootstrap": "^4.4.1",
+    "canvasjs": "^1.8.3",
     "re-resizable": "^6.2.0",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.0",
