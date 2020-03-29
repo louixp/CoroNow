@@ -2,16 +2,16 @@
 This is the starting script for a flask server app
 page routes:
     '/' index, return index.html
-    
+
 api routes:
     '/api/wordcloud' return json, formatted wordcloud data structure
 
 """
 
-from flask import Flask, request, Response
+from flask import Flask, request, Response, jsonify
 from analysis.fetch_news import fetch_news
 from utils.firebase import firebaseAPI
-from config import firebaseConfig, keywords, mapping, wordquerydb
+from config import firebaseConfig, keywords, mapping, wordquerydb, categories
 from news.news import NewsAPI
 from news.handle import search_news
 from utils.utils import format_date, calculate_diff_hour, change_date
@@ -62,7 +62,7 @@ def getWordCloud():
             'text': word["word"].upper(),
             'value': int((word["frequency"]+50)/2)
         })
-
+    new_wordcloud["words"] = new_wordcloud["words"][0:200]
     print(json.dumps(new_wordcloud, indent=2))
     return json.dumps(new_wordcloud)
 
@@ -133,6 +133,25 @@ def getWordTrend():
                     })
     print("Send: {0}", json.dumps(word_date))
     return json.dumps(word_date)
+
+
+@app.route('/api/sentiment', methods=["GET"])
+def getSentimentTrend():
+    return_val = {
+        "sentiment": {}
+    }
+    for category in categories:
+        return_val["sentiment"][category] = []
+    for time_col in firebase.retrieve_data("sentiment").each():
+        time_str = time_col.key()
+        for category in categories:
+            sentiment = firebase.retrieve_data(
+                "sentiment", [time_str, category]).val()
+            return_val["sentiment"][category].append({
+                time_str: sentiment
+            })
+    print(return_val)
+    return jsonify(return_val)
 
 
 @app.route('/')
