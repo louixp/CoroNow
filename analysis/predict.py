@@ -5,8 +5,9 @@ import argparse
 import logging
 import os
 import random
+import pickle
 
-# import numpy as np
+import numpy as np
 import torch
 from torch.utils.data import (DataLoader, RandomSampler, SequentialSampler,
                                TensorDataset)
@@ -117,10 +118,11 @@ def evaluate(args, model, tokenizer, prefix=""):
                 # out_label_ids = np.append(out_label_ids, inputs['labels'].detach().cpu().numpy(), axis=0)
 
         # eval_loss = eval_loss / nb_eval_steps
-        if args.output_mode == "classification":
-            preds = np.argmax(preds, axis=1)
-        elif args.output_mode == "regression":
-            preds = np.squeeze(preds)
+        #if args.output_mode == "classification":
+        preds = np.argmax(preds, axis=1)
+        #elif args.output_mode == "regression":
+        #preds = np.squeeze(preds)
+        
         # result = compute_metrics(eval_task, preds, out_label_ids)
         # results.update(result)
 
@@ -217,12 +219,15 @@ def main():
     args.model_type = args.model_type.lower()
     config_class, model_class, tokenizer_class = MODEL_CLASSES[args.model_type]
 
-
     device = torch.device("cuda" if torch.cuda.is_available() and not args.no_cuda else "cpu")
+    args.device = device
 
     model = model_class.from_pretrained(args.output_dir)
-    model.to(device)
+    model.to(args.device)
 
     tokenizer = tokenizer_class.from_pretrained(args.output_dir)
 
-    return evaluate(args, model, tokenizer)
+    preds = evaluate(args, model, tokenizer)
+
+    with open("analysis/prediction/preds", 'wb') as f:
+        pickle.dump(preds, f)
