@@ -194,9 +194,8 @@ def main():
 
     parser.add_argument("--files",
                         type=str,
-                        nargs='+',
                         action="store",
-                        default="data/raw.xml",
+                        default="analysis/data/raw.xml",
                         help="File that contains the data used for training. Multiple paths will mix the datasets.")
 
     parser.add_argument("--output_dir",
@@ -230,61 +229,61 @@ def main():
     labels_dev_mixed = []
     labels_test_mixed = []
 
-    for fn in args.files:
+    fn = args.files
+    
+    print(args.output_dir)
+    if not os.path.exists(args.output_dir):
+        os.makedirs(args.output_dir)
 
-        print(args.output_dir)
-        if not os.path.exists(args.output_dir):
-            os.makedirs(args.output_dir)
+    print(fn)
+    sents_train, ats_train, idx2labels = semeval2014term_to_aspectsentiment_hr(fn,
+                                                                            remove_conflicting=True) #remove conflicting changed to always
 
-        print(fn)
-        sents_train, ats_train, idx2labels = semeval2014term_to_aspectsentiment_hr(fn,
-                                                                                remove_conflicting=True) #remove conflicting changed to always
+    sentence_pairs_train, labels_train, counts_train = create_sentence_pairs(sents_train, ats_train)
 
-        sentence_pairs_train, labels_train, counts_train = create_sentence_pairs(sents_train, ats_train)
+    if args.istrain:
+        sents_dev, sents_trainsplit = split_shuffle_array(.1, sents_train, 41)
+        ats_dev, ats_trainsplit = split_shuffle_array(.1, ats_train, 41)
 
-        if args.istrain:
-            sents_dev, sents_trainsplit = split_shuffle_array(.1, sents_train, 41)
-            ats_dev, ats_trainsplit = split_shuffle_array(.1, ats_train, 41)
+        sentence_pairs_dev, labels_dev, counts_dev = create_sentence_pairs(sents_dev, ats_dev)
+        sentence_pairs_trainsplit, labels_trainsplit, counts_trainsplit = create_sentence_pairs(sents_trainsplit,
+                                                                                                ats_trainsplit)
+        print_dataset_stats('Train', sents_train, sentence_pairs_train, counts_train)
+        print_dataset_stats('Dev', sents_dev, sentence_pairs_dev, counts_dev)
+        print_dataset_stats('TrainSplit', sents_trainsplit, sentence_pairs_trainsplit, counts_trainsplit)
 
-            sentence_pairs_dev, labels_dev, counts_dev = create_sentence_pairs(sents_dev, ats_dev)
-            sentence_pairs_trainsplit, labels_trainsplit, counts_trainsplit = create_sentence_pairs(sents_trainsplit,
-                                                                                                    ats_trainsplit)
-            print_dataset_stats('Train', sents_train, sentence_pairs_train, counts_train)
-            print_dataset_stats('Dev', sents_dev, sentence_pairs_dev, counts_dev)
-            print_dataset_stats('TrainSplit', sents_trainsplit, sentence_pairs_trainsplit, counts_trainsplit)
+        sentence_pairs_trainsplit_mixed += sentence_pairs_trainsplit
+        sentence_pairs_train_mixed += sentence_pairs_train
+        sentence_pairs_dev_mixed += sentence_pairs_dev
 
-            sentence_pairs_trainsplit_mixed += sentence_pairs_trainsplit
-            sentence_pairs_train_mixed += sentence_pairs_train
-            sentence_pairs_dev_mixed += sentence_pairs_dev
+        labels_trainsplit_mixed += labels_trainsplit
+        labels_train_mixed += labels_train
+        labels_dev_mixed += labels_dev
 
-            labels_trainsplit_mixed += labels_trainsplit
-            labels_train_mixed += labels_train
-            labels_dev_mixed += labels_dev
+        if len(args.files) == 1:
+            if args.upsample:
+                distro_arr = args.upsample.split(' ')
+                pos = float(distro_arr[0])
+                neg = float(distro_arr[1])
+                neu = float(distro_arr[2])
+                assert pos + neg + neu == 1.0, 'upsampling target distribution does not sum to 1'
 
-            if len(args.files) == 1:
-                if args.upsample:
-                    distro_arr = args.upsample.split(' ')
-                    pos = float(distro_arr[0])
-                    neg = float(distro_arr[1])
-                    neu = float(distro_arr[2])
-                    assert pos + neg + neu == 1.0, 'upsampling target distribution does not sum to 1'
+                target_distro = {'POS': pos, 'NEG': neg, 'NEU': neu}
+                print('Target Sampling Distribution for Training Set:', target_distro)
+                sentence_pairs_train, labels_train = upsample_data(sentence_pairs_train, labels_train, target_ratios=target_distro)
 
-                    target_distro = {'POS': pos, 'NEG': neg, 'NEU': neu}
-                    print('Target Sampling Distribution for Training Set:', target_distro)
-                    sentence_pairs_train, labels_train = upsample_data(sentence_pairs_train, labels_train, target_ratios=target_distro)
+            export_dataset_to_xml(args.output_dir + '/train.xml', sentence_pairs_train, labels_train)
+            export_dataset_to_xml(args.output_dir + '/dev.xml', sentence_pairs_dev, labels_dev)
+            export_dataset_to_xml(args.output_dir + '/train_split.xml', sentence_pairs_trainsplit, labels_trainsplit)
 
-                export_dataset_to_xml(args.output_dir + '/train.xml', sentence_pairs_train, labels_train)
-                export_dataset_to_xml(args.output_dir + '/dev.xml', sentence_pairs_dev, labels_dev)
-                export_dataset_to_xml(args.output_dir + '/train_split.xml', sentence_pairs_trainsplit, labels_trainsplit)
+    else:
 
-        else:
+        sentence_pairs_test_mixed += sentence_pairs_train
+        labels_test_mixed += labels_train
 
-            sentence_pairs_test_mixed += sentence_pairs_train
-            labels_test_mixed += labels_train
-
-            print_dataset_stats('Test', sents_train, sentence_pairs_train, counts_train)
-            if len(args.files) == 1:
-                export_dataset_to_xml(args.output_dir + '/test.xml', sentence_pairs_train, labels_train)
+        #print_dataset_stats('Test', sents_train, sentence_pairs_train, counts_train)
+        if len(args.files) == 1:
+            export_dataset_to_xml(args.output_dir + '/test.xml', sentence_pairs_train, labels_train)
 
     if len(args.files) > 1:
 

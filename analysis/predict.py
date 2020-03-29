@@ -7,25 +7,30 @@ import os
 import random
 
 # import numpy as np
-# import torch
+import torch
 # from torch.utils.data import (DataLoader, RandomSampler, SequentialSampler,
                             #   TensorDataset)
 # from torch.utils.data.distributed import DistributedSampler
 # from tensorboardX import SummaryWriter
 from tqdm import tqdm, trange
 
-# from pytorch_transformers import (WEIGHTS_NAME, BertConfig,
-#                                   BertForSequenceClassification, BertTokenizer,
-#                                   XLMConfig, XLMForSequenceClassification,
-#                                   XLMTokenizer, XLNetConfig,
-#                                   XLNetForSequenceClassification,
-#                                   XLNetTokenizer)
+from pytorch_transformers import (WEIGHTS_NAME, BertConfig,
+                                  BertForSequenceClassification, BertTokenizer,
+                                  XLMConfig, XLMForSequenceClassification,
+                                  XLMTokenizer, XLNetConfig,
+                                  XLNetForSequenceClassification,
+                                  XLNetTokenizer)
 
 # from pytorch_transformers import AdamW, WarmupLinearSchedule
 
 from analysis.utils_glue import (compute_metrics, convert_examples_to_features,
                         output_modes, processors)
 
+MODEL_CLASSES = {
+    'bert': (BertConfig, BertForSequenceClassification, BertTokenizer),
+    'xlnet': (XLNetConfig, XLNetForSequenceClassification, XLNetTokenizer),
+    'xlm': (XLMConfig, XLMForSequenceClassification, XLMTokenizer),
+}
 
 #changed to never cache
 def load_and_cache_examples(args, task, tokenizer, evaluate=True):  #evaluate dafualt changed to true
@@ -130,15 +135,15 @@ def main():
     parser = argparse.ArgumentParser()
 
     ## Required parameters
-    parser.add_argument("--data_dir", default="data/transformed", type=str, required=True,
+    parser.add_argument("--data_dir", default="data/transformed", type=str, required=False,
                         help="The input data dir. Should contain the .tsv files (or other data files) for the task.")
-    parser.add_argument("--model_type", default="bert", type=str, required=True,
-                        help="Model type selected in the list: " + ", ".join(MODEL_CLASSES.keys()))
+    parser.add_argument("--model_type", default="bert", type=str, required=False,
+                        help="Model type selected in the list: " )
     # parser.add_argument("--model_name_or_path", default=None, type=str, required=True,
                         # help="Path to pre-trained model or shortcut name selected in the list: " + ", ".join(ALL_MODELS))
-    parser.add_argument("--task_name", default="semeval2014-atsc", type=str, required=True,
+    parser.add_argument("--task_name", default="semeval2014-atsc", type=str, required=False,
                         help="The name of the task to train selected in the list: " + ", ".join(processors.keys()))
-    parser.add_argument("--output_dir", default="model", type=str, required=True,
+    parser.add_argument("--output_dir", default="../model", type=str, required=False,
                         help="The output directory where the model predictions and checkpoints will be written.")
     # # Other parameters
     # parser.add_argument("--config_name", default="", type=str,
