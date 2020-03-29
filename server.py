@@ -37,23 +37,25 @@ def getWordCloud():
     wordcloud_data = json.load(worddb)
     worddb.close()
     print("Word data closed for reading")
-    date_str = format_date(4)
+    date_str = format_date()
     exact_date = [int(it) for it in date_str.split("-")]
     exact_date.append(0)
     word_list = []
     if date_str not in wordcloud_data.keys():
-        word_list, frequency = word_count(firebase)
+        word_list, frequency = word_count(firebase, end_time=exact_date)
         if(word_list[0]["word"] == ""):
+            print("Find previous data")
             data_keys = wordcloud_data.keys()
             sorted_keys = sorted(data_keys, key=lambda x: int(x.split(
                 "-")[1])*30*24 + int(x.split("-")[2])*24 + int(x.split("-")[3]), reverse=True)
             word_list = wordcloud_data[sorted_keys[0]]
-        wordcloud_data[date_str] = word_list
-        worddb = open(wordquerydb, "w")
-        print("Word data opened for writing")
-        json.dump(wordcloud_data, worddb)
-        worddb.close()
-        print("Word data closed for writing")
+        else:
+            wordcloud_data[date_str] = word_list
+            worddb = open(wordquerydb, "w")
+            print("Word data opened for writing")
+            json.dump(wordcloud_data, worddb)
+            worddb.close()
+            print("Word data closed for writing")
     else:
         word_list = wordcloud_data[date_str]
     new_wordcloud = {'words': []}
@@ -135,19 +137,19 @@ def getWordTrend():
     return json.dumps(word_date)
 
 
-@app.route('/api/sentiment', methods=["GET"])
+@app.route('/api/sentiments', methods=["GET"])
 def getSentimentTrend():
     return_val = {
-        "sentiment": {}
+        "sentiments": {}
     }
     for category in categories:
-        return_val["sentiment"][category] = []
+        return_val["sentiments"][category] = []
     for time_col in firebase.retrieve_data("sentiment").each():
         time_str = time_col.key()
         for category in categories:
             sentiment = firebase.retrieve_data(
                 "sentiment", [time_str, category]).val()
-            return_val["sentiment"][category].append({
+            return_val["sentiments"][category].append({
                 "timestamp": time_str,
                 "value": sentiment
             })
