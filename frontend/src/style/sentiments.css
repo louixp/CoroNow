@@ -5,19 +5,33 @@
   white-space: pre-wrap;
   background-color: rgb(238, 138, 138);
   text-align: center;
+  height: 10%;
+  margin: 0px;
 }
 
 #sentiment_contents {
-  background-color: rgb(153, 153, 255)
+  background-color: rgb(153, 153, 255);
+  height: 90%;
+  margin: 0px;
+  overflow: auto;
 }
 
 div.sentiment_small {
   text-align: center;
   font-size: large;
-  font-family: Arial, Helvetica, sans-serif;
-  color: rgb(235, 220, 14);
+  font-family: "Raleway", sans-serif;
+  font-weight: bold;
+}
+
+div.sentiment_trend_title {
+  text-align: center;
+  font-size: large;
+  font-family: "Raleway", sans-serif;
+  font-weight: bold;
+  color: rgb(228, 228, 228);
 }
 
 div.sentiment_trend {
-  width: 60%
+  width: 60%;
+  margin: auto;
 }

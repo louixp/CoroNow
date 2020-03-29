@@ -18,7 +18,7 @@ class Sentiments extends React.Component {
       <div
         style={{
           height: "100%",
-          width: "100%",
+          width: "100%"
         }}
         id={this.props.id}
       >
@@ -72,17 +72,39 @@ class SentimentItem extends React.Component {
     let cat = this.props.category;
     let sen = this.props.sentiment_list;
     if (this.state.state === "show_last") {
+      let value = sen[sen.length - 1].value.toFixed(2);
+      let color = "green";
+      if (value < 0) color = "red";
+      if (value == 0) color = "yellow";
       // display a single line
       return (
-        <div id={this.props.id} onClick={() => this.expand()} className="sentiment_small">
-          {cat}: {sen[sen.length - 1].value}
+        <div
+          id={this.props.id}
+          onClick={() => this.expand()}
+          className="sentiment_small"
+          style={{
+            color: color,
+          }}
+        >
+          {cat}: {value}
         </div>
       );
     } else if (this.state.state === "show_trend") {
       // display trend of this category
       return (
-        <div id={this.props.id} onClick={() => this.collapse()} className="sentiment_big">
-          <SentimentTrend data={sen} category={this.props.category}/>
+        <div
+          id={this.props.id}
+          onClick={() => this.collapse()}
+          className="sentiment_big"
+        >
+        <div
+          id={this.props.id}
+          onClick={() => this.expand()}
+          className="sentiment_trend_title"
+        >
+          HISTORICAL SENTIMENT ABOUT {cat}
+        </div>
+          <SentimentTrend data={sen} category={this.props.category} />
         </div>
       );
     }
@@ -114,32 +136,29 @@ class SentimentTrend extends React.Component {
       }
       const options = {
         animationEnabled: true,
-        title: {
-          text: "Sentiment trend about " + this.props.category
-        },
-        backgroundColor: "#eeeeee",
+        theme: "light1",
+        // title: {
+        //   text: "Sentiment trend about " + this.props.category
+        // },
         axisX: {
           valueFormatString: "MMM.DD HH:00",
           lineThickness: 4
         },
         axisY: {
-          title: "Frequency",
           includeZero: true,
           maximum: 1,
           minimum: -1
         },
         data: [
           {
-            type: "line",
+            type: "spline",
             dataPoints: sen_arr
           }
         ]
       };
       trend_graph = <CanvasJSChart options={options} />;
     }
-    return (
-      <div className="sentiment_trend">{trend_graph}</div>
-    );
+    return <div className="sentiment_trend">{trend_graph}</div>;
   }
 }
 
