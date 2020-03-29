@@ -4,48 +4,9 @@ import xml.etree.ElementTree as ET
 import random
 import math
 from collections import Counter
-from utils import semeval2014term_to_aspectsentiment_hr
+from analysis.utils import semeval2014term_to_aspectsentiment_hr
 from copy import copy, deepcopy
 
-parser = argparse.ArgumentParser(description='Generate finetuning corpus for restaurants.')
-
-parser.add_argument('--noconfl',
-                    action='store_true',
-                    default=True,
-                    help='Remove conflicting sentiments from labels')
-
-parser.add_argument('--istrain',
-                    action='store_true',
-                    default=False,
-                    help='If is a training set we split of 10% and output train_full, train_split, dev. Default is testset creating no split')
-
-parser.add_argument("--files",
-                    type=str,
-                    nargs='+',
-                    action="store",
-                    default="data/raw.xml"
-                    help="File that contains the data used for training. Multiple paths will mix the datasets.")
-
-parser.add_argument("--output_dir",
-                    type=str,
-                    action="store",
-                    default="data/transformed",
-                    help="output dir of the dataset(s)")
-
-parser.add_argument("--upsample",
-                    type=str,
-                    action="store",
-                    default=None,
-                    help="please add a string with 3 numbers like '0.5 0.3 0.2' representing relative numbers of 'POS NEG NEU' adding to 1"
-                         " which represents target distribution - only valid in non-confl case")
-
-parser.add_argument("--seed",
-                    type=int,
-                    action="store",
-                    default=41,
-                    help="random seed, effects on upsampling and validationset")
-
-args = parser.parse_args()
 
 
 # 1. Load The Dataset
@@ -218,25 +179,65 @@ def save_dataset_to_tsv(fn, data):
     pass
 
 
-sentence_pairs_train_mixed = []
-sentence_pairs_trainsplit_mixed = []
-sentence_pairs_dev_mixed = []
-sentence_pairs_test_mixed = []
+def main():
+    parser = argparse.ArgumentParser(description='Generate finetuning corpus for restaurants.')
 
-labels_train_mixed = []
-labels_trainsplit_mixed = []
-labels_dev_mixed = []
-labels_test_mixed = []
+    parser.add_argument('--noconfl',
+                        action='store_true',
+                        default=True,
+                        help='Remove conflicting sentiments from labels')
 
-for fn in args.files:
+    parser.add_argument('--istrain',
+                        action='store_true',
+                        default=False,
+                        help="If is a training set we split of 10 percent and output train_full, train_split, dev. Default is testset creating no split")
 
+    parser.add_argument("--files",
+                        type=str,
+                        action="store",
+                        default="analysis/data/raw.xml",
+                        help="File that contains the data used for training. Multiple paths will mix the datasets.")
+
+    parser.add_argument("--output_dir",
+                        type=str,
+                        action="store",
+                        default="analysis/data/transformed",
+                        help="output dir of the dataset(s)")
+
+    parser.add_argument("--upsample",
+                        type=str,
+                        action="store",
+                        default=None,
+                        help="please add a string with 3 numbers like '0.5 0.3 0.2' representing relative numbers of 'POS NEG NEU' adding to 1"
+                            " which represents target distribution - only valid in non-confl case")
+
+    parser.add_argument("--seed",
+                        type=int,
+                        action="store",
+                        default=41,
+                        help="random seed, effects on upsampling and validationset")
+
+    args = parser.parse_args()
+
+    sentence_pairs_train_mixed = []
+    sentence_pairs_trainsplit_mixed = []
+    sentence_pairs_dev_mixed = []
+    sentence_pairs_test_mixed = []
+
+    labels_train_mixed = []
+    labels_trainsplit_mixed = []
+    labels_dev_mixed = []
+    labels_test_mixed = []
+
+    fn = args.files
+    
     print(args.output_dir)
     if not os.path.exists(args.output_dir):
         os.makedirs(args.output_dir)
 
     print(fn)
     sents_train, ats_train, idx2labels = semeval2014term_to_aspectsentiment_hr(fn,
-                                                                               remove_conflicting=True) #remove conflicting changed to always
+                                                                            remove_conflicting=True) #remove conflicting changed to always
 
     sentence_pairs_train, labels_train, counts_train = create_sentence_pairs(sents_train, ats_train)
 
@@ -280,16 +281,17 @@ for fn in args.files:
         sentence_pairs_test_mixed += sentence_pairs_train
         labels_test_mixed += labels_train
 
-        print_dataset_stats('Test', sents_train, sentence_pairs_train, counts_train)
+        #print_dataset_stats('Test', sents_train, sentence_pairs_train, counts_train)
         if len(args.files) == 1:
             export_dataset_to_xml(args.output_dir + '/test.xml', sentence_pairs_train, labels_train)
 
-if len(args.files) > 1:
+    if len(args.files) > 1:
 
-    if args.istrain:
-        export_dataset_to_xml(args.output_dir + '/train.xml', sentence_pairs_train_mixed, labels_train_mixed)
-        export_dataset_to_xml(args.output_dir + '/dev.xml', sentence_pairs_dev_mixed, labels_dev_mixed)
-        export_dataset_to_xml(args.output_dir + '/train_split.xml', sentence_pairs_trainsplit_mixed,
-                              labels_trainsplit_mixed)
-    else:
-        export_dataset_to_xml(args.output_dir + '/test.xml', sentence_pairs_test_mixed, labels_test_mixed)
+        if args.istrain:
+            export_dataset_to_xml(args.output_dir + '/train.xml', sentence_pairs_train_mixed, labels_train_mixed)
+            export_dataset_to_xml(args.output_dir + '/dev.xml', sentence_pairs_dev_mixed, labels_dev_mixed)
+            export_dataset_to_xml(args.output_dir + '/train_split.xml', sentence_pairs_trainsplit_mixed,
+                                labels_trainsplit_mixed)
+        else:
+            export_dataset_to_xml(args.output_dir + '/test.xml', sentence_pairs_test_mixed, labels_test_mixed)
+

@@ -1,0 +1,3 @@
+[submodule "domain-adapted-atsc"]
+	path = domain-adapted-atsc
+	url = https://github.com/WilliamYZhu/domain-adapted-atsc.git
