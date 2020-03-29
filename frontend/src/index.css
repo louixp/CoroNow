@@ -7,6 +7,10 @@ body,
   margin: 0;
 }
 
+#right-contents {
+  overflow: hidden;
+}
+
 /* Hide Scroll Bar */
 /* Chrome*/
 body::-webkit-scrollbar, div::-webkit-scrollbar {

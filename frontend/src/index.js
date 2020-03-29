@@ -6,7 +6,8 @@ import WordCloud from "./wordcloud.js";
 import Trend from "./trend.js";
 import Newslist from "./newslist.js";
 import Sidebar from "react-sidebar";
-import hover_menu from "./resources/hover_menu.png";
+import Nav from "./nav.js";
+import Sentiments from "./sentiments.js";
 
 // main frame of home page
 class Main extends React.Component {
@@ -78,16 +79,30 @@ class Main extends React.Component {
   );
 
   parentSideBar = (
-    <div
-      className="parent-side-bar"
-      onMouseLeave={() => this.setSidebarClosed()}
+    <Nav
+      onMouseLeave= {() => this.setSidebarClosed()}
       style={{
         height: "100%",
-        width: "100%"
+        width: "100%",
       }}
-    >
-      <p>this is parent side bar</p>
-    </div>
+      items={[
+        {
+          text: "WORD CLOUD",
+          id: "word-cloud"
+        },
+        {
+          text: "SEARCH NEWS",
+          id: "news_list"
+        },
+        {
+          text: "SENTIMENTS",
+          id: "sentiments"
+        },
+      ]}
+      callbacks ={{
+        closeNav: ()=>this.setSidebarClosed()
+      }}
+    />
   );
 
   // callback function for word clicking, display a trend overlay window
@@ -120,14 +135,6 @@ class Main extends React.Component {
         }}
         id="main-div"
       >
-        {/* <Sidebar
-          sidebar={this.parentSideBar}
-          open={this.state.sidebar_open}
-          onSetOpen={() => this.setSidebarOpen()}
-          styles={this.sideBarStyle}
-          // onMouseLeave={() => this.setSidebarClosed()}
-          id="navigate"
-        > */}
         <Sidebar
           sidebar={this.childSideBar}
           // open={this.state.sidebar_open}
@@ -150,6 +157,7 @@ class Main extends React.Component {
                 height: "100%",
                 width: "100%"
               }}
+              id="right-contents"
             >
               <WordCloud
                 onWordClick={text => this.activateTrend(text)}
@@ -159,6 +167,7 @@ class Main extends React.Component {
                   height: "100%",
                   width: "100%"
                 }}
+                id="word-cloud"
               />
               <Trend
                 enable={this.state.trend_open}
@@ -168,6 +177,7 @@ class Main extends React.Component {
                 }}
               />
               <Newslist />
+              <Sentiments id="sentiments" />
             </div>
           </Sidebar>
         </Sidebar>

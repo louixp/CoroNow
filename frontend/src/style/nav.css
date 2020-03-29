@@ -1,3 +1,5 @@
-div.side-bar-content {
-    height: 100%;
+.nav-item:hover,
+.nav-item:focus,
+.nav-item:active {
+    background-color: pink;
 }

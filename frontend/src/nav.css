@@ -1,0 +1,7 @@
+.nav-item:hover,
+.nav-item:focus,
+.nav-item:active {
+    background-color: #96b38a;
+    color: black;
+    border: none;
+}
