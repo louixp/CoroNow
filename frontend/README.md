@@ -4,6 +4,10 @@ This is the react package to create a webpage displaying data processed by CoroN
 
 ## Implementation
 
+### Navigation Side Bar
+
+A sidebar component on the right side, expand on mouse over and collapse on mouse out. This sidebar will tell Main component whether to render News or Sentiment or jsut Wordcloud.  
+
 ### Word Cloud
 
 Use react-wordcloud package to create a responsive, callback-able wordcloud.  
@@ -22,5 +26,4 @@ NOTES
 
 ### Sentiments
 
-Desired effect: when scrolling down along the page, word cloud shrinks vertically, and giving about 2/3 of the space of the whole page to sentiment results.  
-TODO  
+Add a toolbar on the right side, expand on mouse over.  
