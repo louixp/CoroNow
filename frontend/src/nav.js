@@ -1,8 +1,6 @@
 import React from "react";
 import "./index.css";
-import Sidebar from "react-sidebar";
 import "./style/nav.css";
-import hover_menu from "./resources/hover_menu.png";
 
 class Nav extends React.Component {
   // props: mouseOverHandler, mouseOutHandler
@@ -13,52 +11,43 @@ class Nav extends React.Component {
     };
   }
 
-  setSidebarOpen() {
-    this.setState({
-      state: "expanded"
-    });
-  }
-
-  setSidebarClosed() {
-    this.setState({
-      state: "init"
-    });
-  }
-
-  sideBarContents = (
-    <div
-      className="side-bar-content"
-      onMouseLeave={() => this.setSidebarClosed()}
-    >
-      <p>hello this is nav</p>
-    </div>
-  );
-
-  sideBarStyle = {
-    sidebar: {
-      background: "white",
-    }
+  getScrollCallBack(id) {
+    return ()=>{
+      let el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView(true);
+      }
+      this.props.callbacks.closeNav();
+    };
   }
 
   render() {
-    let is_open = this.state.state === "expanded";
     return (
-      <Sidebar
-        sidebar={this.sideBarContents}
-        open={is_open}
-        onSetOpen={() => this.setSidebarOpen()}
-        styles={this.sideBarStyle}
-        onMouseLeave={() => this.setSidebarClosed()}
+      <div
+        onMouseLeave={this.props.onMouseLeave}
+        style={this.props.style}
       >
-        <img
-          width="2%"
-          src={hover_menu}
-          alt="menu"
-          onMouseOver={() => this.setSidebarOpen()}
-        />
-      </Sidebar>
+        <p>this is nav bar</p>
+        {/* <NavItem text="WORD CLOUD" callback={this.getScrollCallBack("word-cloud")} />
+        <NavItem text="SEARCH NEWS" callback={this.getScrollCallBack("news-search")} />
+        <NavItem text="SENTIMENTS" callback={this.getScrollCallBack("sentiments")} /> */}
+        {this.props.items.map(el => {
+          console.log("return a nav item!");
+          return (<NavItem text={el.text} callback={this.getScrollCallBack(el.id)} />);
+        })}
+      </div>
     );
   }
+}
+
+function NavItem({text, callback}) {
+  return (
+  <p 
+    onClick={callback}
+    className="nav-item"
+  >
+    {text}
+  </p>);
 }
 
 export default Nav;

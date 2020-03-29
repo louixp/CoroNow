@@ -19,7 +19,7 @@ function wordCloudCallBack(callback_str) {
 const wordcloud_options = {
   colors: ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b"],
   enableTooltip: true,
-  deterministic: true,
+  deterministic: false,
   fontFamily: "helvetica",
   fontSizes: [20, 70],
   fontStyle: "normal",
@@ -80,6 +80,7 @@ class WordCloud extends React.Component {
       return (
         <div
           style={this.props.style}
+          id={this.props.id}
         >
           <ReactWordcloud
             words={this.props.words}

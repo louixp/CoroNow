@@ -7,7 +7,8 @@ import Wordtrend from "./wordtrend.js";
 import Newslist from "./newslist.js";
 import Trend from "./trend.js";
 import Sidebar from "react-sidebar";
-import hover_menu from "./resources/hover_menu.png";
+import Nav from "./nav.js";
+import Sentiments from "./sentiments.js";
 
 // main frame of home page
 class Main extends React.Component {
@@ -62,14 +63,48 @@ class Main extends React.Component {
     }
   };
 
-  sideBarContents = (
+  childSideBar = (
     <div
-      className="side-bar-content"
-      onMouseLeave={() => this.setSidebarClosed()}
-      height="100%"
+      className="child-side-bar"
+      // onMouseLeave={() => this.setSidebarClosed()}
+      style={{
+        height: "100%",
+        width: "100%",
+        textAlign: "center",
+        color: "grey",
+        fontFamily: "helvetica"
+      }}
+      onMouseOver={() => this.setSidebarOpen()}
     >
-      <p>hello this is nav</p>
+      <p> >> </p>
     </div>
+  );
+
+  parentSideBar = (
+    <Nav
+      onMouseLeave= {() => this.setSidebarClosed()}
+      style={{
+        height: "100%",
+        width: "100%",
+      }}
+      items={[
+        {
+          text: "WORD CLOUD",
+          id: "word-cloud"
+        },
+        {
+          text: "SEARCH NEWS",
+          id: "news_list"
+        },
+        {
+          text: "SENTIMENTS",
+          id: "sentiments"
+        },
+      ]}
+      callbacks ={{
+        closeNav: ()=>this.setSidebarClosed()
+      }}
+    />
   );
 
   // callback function for word clicking, display a trend overlay window
@@ -121,42 +156,51 @@ class Main extends React.Component {
         id="main-div"
       >
         <Sidebar
-          sidebar={this.sideBarContents}
-          open={this.state.sidebar_open}
-          onSetOpen={() => this.setSidebarOpen()}
+          sidebar={this.childSideBar}
+          // open={this.state.sidebar_open}
           styles={this.sideBarStyle}
-          onMouseLeave={() => this.setSidebarClosed()}
-          id="total"
+          // onMouseLeave={() => this.setSidebarClosed()}
+          id="switch"
+          docked={true}
         >
-          <div>
-            <img
-              height="20px"
-              src={hover_menu}
-              alt="menu"
-              onMouseOver={() => this.setSidebarOpen()}
-            />
-          </div>
-          <WordCloud
-            onWordClick={text => this.activateTrend(text)}
-            words={this.state.words}
-            ver={this.state.word_list_version}
-            style={{
-              position: "absolute",
-              top: "20px",
-              left: "0px",
-              right: "0px",
-              bottom: "0px"
-            }}
-          />
-          <Trend
-            enable={this.state.trend_open}
-            text={this.state.overlay_text}
-            handleClose={() => {
-              this.deactivateTrend();
-            }}
-            currentTrend={this.state.current_trend}
-          />
-          {/* <Newslist /> */}
+          <Sidebar
+            sidebar={this.parentSideBar}
+            open={this.state.sidebar_open}
+            onSetOpen={() => this.setSidebarOpen()}
+            styles={this.sideBarStyle}
+            // onMouseLeave={() => this.setSidebarClosed()}
+            id="navigate"
+          >
+            <div
+              style={{
+                float: "right",
+                height: "100%",
+                width: "100%"
+              }}
+              id="right-contents"
+            >
+              <WordCloud
+                onWordClick={text => this.activateTrend(text)}
+                words={this.state.words}
+                ver={this.state.word_list_version}
+                style={{
+                  height: "100%",
+                  width: "100%"
+                }}
+                id="word-cloud"
+              />
+              <Trend
+                enable={this.state.trend_open}
+                text={this.state.overlay_text}
+                handleClose={() => {
+                  this.deactivateTrend();
+                }}
+                currentTrend={this.state.current_trend}
+              />
+              <Newslist />
+              <Sentiments id="sentiments" />
+            </div>
+          </Sidebar>
         </Sidebar>
       </div>
     );
