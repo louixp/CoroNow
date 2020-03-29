@@ -201,7 +201,7 @@ def main():
     parser.add_argument("--output_dir",
                         type=str,
                         action="store",
-                        default="data/transformed",
+                        default="analysis/data/transformed",
                         help="output dir of the dataset(s)")
 
     parser.add_argument("--upsample",

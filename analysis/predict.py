@@ -8,8 +8,8 @@ import random
 
 # import numpy as np
 import torch
-# from torch.utils.data import (DataLoader, RandomSampler, SequentialSampler,
-                            #   TensorDataset)
+from torch.utils.data import (DataLoader, RandomSampler, SequentialSampler,
+                               TensorDataset)
 # from torch.utils.data.distributed import DistributedSampler
 # from tensorboardX import SummaryWriter
 from tqdm import tqdm, trange
@@ -31,6 +31,8 @@ MODEL_CLASSES = {
     'xlnet': (XLNetConfig, XLNetForSequenceClassification, XLNetTokenizer),
     'xlm': (XLMConfig, XLMForSequenceClassification, XLMTokenizer),
 }
+
+logger = logging.getLogger(__name__)
 
 #changed to never cache
 def load_and_cache_examples(args, task, tokenizer, evaluate=True):  #evaluate dafualt changed to true
@@ -80,7 +82,7 @@ def evaluate(args, model, tokenizer, prefix=""):
         if not os.path.exists(eval_output_dir) and args.local_rank in [-1, 0]:
             os.makedirs(eval_output_dir)
 
-        args.eval_batch_size = args.per_gpu_eval_batch_size * max(1, args.n_gpu)
+        args.eval_batch_size = args.per_gpu_eval_batch_size 
         # Note that DistributedSampler samples randomly
         eval_sampler = SequentialSampler(eval_dataset) #eval_sampler changed to never distributed 
         eval_dataloader = DataLoader(eval_dataset, sampler=eval_sampler, batch_size=args.eval_batch_size)
@@ -135,7 +137,7 @@ def main():
     parser = argparse.ArgumentParser()
 
     ## Required parameters
-    parser.add_argument("--data_dir", default="data/transformed", type=str, required=False,
+    parser.add_argument("--data_dir", default="analysis/data/transformed", type=str, required=False,
                         help="The input data dir. Should contain the .tsv files (or other data files) for the task.")
     parser.add_argument("--model_type", default="bert", type=str, required=False,
                         help="Model type selected in the list: " )
@@ -143,7 +145,7 @@ def main():
                         # help="Path to pre-trained model or shortcut name selected in the list: " + ", ".join(ALL_MODELS))
     parser.add_argument("--task_name", default="semeval2014-atsc", type=str, required=False,
                         help="The name of the task to train selected in the list: " + ", ".join(processors.keys()))
-    parser.add_argument("--output_dir", default="../model", type=str, required=False,
+    parser.add_argument("--output_dir", default="analysis/model", type=str, required=False,
                         help="The output directory where the model predictions and checkpoints will be written.")
     # # Other parameters
     # parser.add_argument("--config_name", default="", type=str,
@@ -152,9 +154,9 @@ def main():
     #                     help="Pretrained tokenizer name or path if not the same as model_name")
     # parser.add_argument("--cache_dir", default="", type=str,
     #                     help="Where do you want to store the pre-trained models downloaded from s3")
-    # parser.add_argument("--max_seq_length", default=128, type=int,
-    #                     help="The maximum total input sequence length after tokenization. Sequences longer "
-    #                             "than this will be truncated, sequences shorter will be padded.")
+    parser.add_argument("--max_seq_length", default=256, type=int,
+                        help="The maximum total input sequence length after tokenization. Sequences longer "
+                                "than this will be truncated, sequences shorter will be padded.")
     # parser.add_argument("--do_train", action='store_true',
     #                     help="Whether to run training.")
     # parser.add_argument("--do_eval", action='store_true',
@@ -166,8 +168,8 @@ def main():
 
     # parser.add_argument("--per_gpu_train_batch_size", default=8, type=int,
     #                     help="Batch size per GPU/CPU for training.")
-    # parser.add_argument("--per_gpu_eval_batch_size", default=8, type=int,
-    #                     help="Batch size per GPU/CPU for evaluation.")
+    parser.add_argument("--per_gpu_eval_batch_size", default=8, type=int,
+                        help="Batch size per GPU/CPU for evaluation.")
     # parser.add_argument('--gradient_accumulation_steps', type=int, default=1,
     #                     help="Number of updates steps to accumulate before performing a backward/update pass.")
     # parser.add_argument("--learning_rate", default=5e-5, type=float,
@@ -209,13 +211,17 @@ def main():
     #                     help="For distributed training: local_rank")
     # parser.add_argument('--server_ip', type=str, default='', help="For distant debugging.")
     # parser.add_argument('--server_port', type=str, default='', help="For distant debugging.")
+    parser.add_argument('--output_mode', type=str, default='regressions')
     args = parser.parse_args()
+
+    args.model_type = args.model_type.lower()
+    config_class, model_class, tokenizer_class = MODEL_CLASSES[args.model_type]
 
 
     device = torch.device("cuda" if torch.cuda.is_available() and not args.no_cuda else "cpu")
 
     model = model_class.from_pretrained(args.output_dir)
-    model.to(args.device)
+    model.to(device)
 
     tokenizer = tokenizer_class.from_pretrained(args.output_dir)
 
