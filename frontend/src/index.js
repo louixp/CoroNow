@@ -18,7 +18,8 @@ class Main extends React.Component {
       sidebar_open: false,
       overlay_text: "",
       word_list_version: 0, // if there's need to update word list, increment this variable to notify wordcloud re-render
-      words: []
+      words: [],
+      current_trend: []
     };
     this.getWordList();
   }
@@ -155,7 +156,6 @@ class Main extends React.Component {
             }}
             currentTrend={this.state.current_trend}
           />
-          <Wordtrend />
           {/* <Newslist /> */}
         </Sidebar>
       </div>

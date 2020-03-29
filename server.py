@@ -131,6 +131,7 @@ def getWordTrend():
                         "date": old_date_arr,
                         "value": ele["frequency"]
                     })
+    print("Send: {0}", json.dumps(word_date))
     return json.dumps(word_date)
 
 

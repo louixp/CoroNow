@@ -4,6 +4,7 @@ import "./index.css";
 import "d3-transition";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
+import Wordtrend from "./wordtrend.js";
 
 class Trend extends React.Component {
   // props: enable, text, handleClose
@@ -30,7 +31,9 @@ class Trend extends React.Component {
               Trend of "{this.props.text.toUpperCase()}" over Past 24 Hours
             </Modal.Title>
           </Modal.Header>
-          <Modal.Body>{this.props.text}</Modal.Body>
+          <Modal.Body>
+            <Wordtrend data={this.props.currentTrend} />
+          </Modal.Body>
         </Modal>
       );
 
