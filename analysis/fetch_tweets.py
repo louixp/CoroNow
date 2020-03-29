@@ -26,7 +26,7 @@ def fetch_tweets(firebase, start_time=[], end_time=check_date(), keyword="Corona
         key = tweet_col.key()
         data_time = key.split("-")
         data_time = [int(ele) for ele in data_time]
-        if compare_date(data_time, start_time, 4) != "Less" and compare_date(data_time, end_time, 4) != "Greater":
+        if compare_date(data_time, start_time, 4) == "Greater" and compare_date(data_time, end_time, 4) != "Greater":
             print("Tweet fetched by TWINT at {0}".format(key))
             data = tweet_col.val()
             current_tweets = data[keyword]
