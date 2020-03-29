@@ -8,8 +8,15 @@ from utils.utils import check_date
 # print(convert_to_XML(firebase, [start_time ...]))
 
 
-def convert_to_XML(firebase, start_time=[], end_time=check_date(), keyword="Coronavirus", entry="tweet"):
-    strarr = fetch_tweets(firebase, start_time, end_time, keyword, entry)
+def convert_to_XML(firebase, start_time=[], end_time=check_date(), keywords=["Coronavirus"], entry="tweet"):
+    
+    strar = []
+    if len(keywords) > 1:
+        for keyword in keywords:
+            strarr.expand(fetch_tweets(firebase, start_time, end_time, keyword, entry))
+    else:
+        strarr = fetch_tweets(firebase, start_time, end_time, keywords[0], entry)
+
     root = etree.Element('sentences')
     _id = 0
     for _str in strarr:
