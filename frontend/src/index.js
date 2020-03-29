@@ -3,8 +3,9 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import "bootstrap/dist/css/bootstrap.css"; // this file is required for Modal to work
 import WordCloud from "./wordcloud.js";
-import Trend from "./trend.js";
+import Wordtrend from "./wordtrend.js";
 import Newslist from "./newslist.js";
+import Trend from "./trend.js";
 import Sidebar from "react-sidebar";
 import Nav from "./nav.js";
 import Sentiments from "./sentiments.js";
@@ -18,7 +19,8 @@ class Main extends React.Component {
       sidebar_open: false,
       overlay_text: "",
       word_list_version: 0, // if there's need to update word list, increment this variable to notify wordcloud re-render
-      words: []
+      words: [],
+      current_trend: []
     };
     this.getWordList();
   }
@@ -108,13 +110,31 @@ class Main extends React.Component {
   // callback function for word clicking, display a trend overlay window
   activateTrend(text) {
     // fetch data here
-    if (this.state.trend_open === false) {
-      this.setState({
-        trend_open: true,
-        overlay_text: text
-        // add more data to pass in here
+    var that = this;
+    var esc = encodeURIComponent;
+    var url = "/trend" + "?word=" + esc(text);
+    fetch(url, {
+      method: "GET",
+      cache: "no-cache",
+      headers: {
+        "Content-type": "application/json"
+      },
+      redirect: "follow"
+    })
+      .then(res => res.json())
+      .then(res => {
+        if (that.state.trend_open === false) {
+          that.setState({
+            current_trend: res
+          });
+        }
+      })
+      .then(() => {
+        that.setState({
+          trend_open: true,
+          overlay_text: text
+        });
       });
-    }
   }
 
   // callback function for close window button on overlay, deactivate overlay window
@@ -175,6 +195,7 @@ class Main extends React.Component {
                 handleClose={() => {
                   this.deactivateTrend();
                 }}
+                currentTrend={this.state.current_trend}
               />
               <Newslist />
               <Sentiments id="sentiments" />

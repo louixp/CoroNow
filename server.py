@@ -14,7 +14,7 @@ from utils.firebase import firebaseAPI
 from config import firebaseConfig, keywords, mapping, wordquerydb
 from news.news import NewsAPI
 from news.handle import search_news
-from utils.utils import format_date
+from utils.utils import format_date, calculate_diff_hour, change_date
 from analysis.count_word import word_count
 import json
 import os
@@ -38,9 +38,16 @@ def getWordCloud():
     worddb.close()
     print("Word data closed for reading")
     date_str = format_date(4)
+    exact_date = [int(it) for it in date_str.split("-")]
+    exact_date.append(0)
     word_list = []
     if date_str not in wordcloud_data.keys():
-        word_list, maxfreq = word_count(firebase)
+        word_list, frequency = word_count(firebase)
+        if(word_list[0]["word"] == ""):
+            data_keys = wordcloud_data.keys()
+            sorted_keys = sorted(data_keys, key=lambda x: int(x.split(
+                "-")[1])*30*24 + int(x.split("-")[2])*24 + int(x.split("-")[3]), reverse=True)
+            word_list = wordcloud_data[sorted_keys[0]]
         wordcloud_data[date_str] = word_list
         worddb = open(wordquerydb, "w")
         print("Word data opened for writing")
@@ -99,6 +106,33 @@ def getNewsList():
     res = trim_news(res)
     print("Return data: {0}".format(res))
     return json.dumps(res)
+
+
+@app.route('/trend', methods=["GET"])
+def getWordTrend():
+    word = request.args.get("word").lower()
+    print("New Word: {0}".format(word))
+    worddb = open(wordquerydb, "r")
+    print("Word data opened for reading")
+    wordcloud_data = json.load(worddb)
+    worddb.close()
+    print("Word data closed for reading")
+    date_str = format_date(4)
+    word_date = {}
+    word_date["word"] = word
+    word_date["frequency"] = []
+    for key in wordcloud_data.keys():
+        old_date_arr = [int(it) for it in key.split("-")]
+        new_date_arr = [int(it) for it in date_str.split("-")]
+        if calculate_diff_hour(old_date_arr, new_date_arr) <= 24:
+            for ele in wordcloud_data[key]:
+                if ele["word"] == word:
+                    word_date["frequency"].append({
+                        "date": old_date_arr,
+                        "value": ele["frequency"]
+                    })
+    print("Send: {0}", json.dumps(word_date))
+    return json.dumps(word_date)
 
 
 @app.route('/')

@@ -1,15 +1,19 @@
 from .fetch_tweets import fetch_tweets
 from lxml import etree
-from utils.utils import check_date
+from config import keywords, xml_data
+from utils.utils import check_date, change_date
 
 # Usage
 # pip install lxml
 # firebase = firebaseAPI(firebaseConfig)
-# print(convert_to_XML(firebase, [start_time ...]))
+# print(convert_to_XML(firebase, time))
 
 
-def convert_to_XML(firebase, start_time=[], end_time=check_date(), keyword="Coronavirus", entry="tweet"):
-    strarr = fetch_tweets(firebase, start_time, end_time, keyword, entry)
+def convert_to_XML(firebase, time):
+    edtime = change_date(time, minute=30)
+    strarr = []
+    for keyword in keywords:
+        strarr.extend(fetch_tweets(firebase, end_time=edtime, keyword=keyword))
     root = etree.Element('sentences')
     _id = 0
     for _str in strarr:
@@ -20,5 +24,9 @@ def convert_to_XML(firebase, start_time=[], end_time=check_date(), keyword="Coro
         child.set("id", str(_id))
         root.append(child)
         _id += 1
-    s = etree.tostring(root, pretty_print=True).decode()
+    s = etree.tostring(root, pretty_print=True)
+    f = open(xml_data, "wb+")
+    f.write(s)
+    f.close()
+    s = s.decode()
     return s
