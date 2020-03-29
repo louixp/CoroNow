@@ -148,7 +148,8 @@ def getSentimentTrend():
             sentiment = firebase.retrieve_data(
                 "sentiment", [time_str, category]).val()
             return_val["sentiment"][category].append({
-                time_str: sentiment
+                "timestamp": time_str,
+                "value": sentiment
             })
     print(return_val)
     return jsonify(return_val)
