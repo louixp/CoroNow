@@ -28,7 +28,6 @@ def main(source=2, mode=2):
             date = format_date()
             print("\n== Waiting at {0} ==\n".format(date))
         time.sleep(60)
-    '''
 
 
 if __name__ == "__main__":
