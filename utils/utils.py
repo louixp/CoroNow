@@ -60,3 +60,9 @@ def calculate_time(_file=datefile):
     diff = ((newdate[0] - olddate[0]) * 365 + (newdate[1] - olddate[1]) * 30 + newdate[2] -
             olddate[2]) * 24 * 60 + (newdate[3] - olddate[3]) * 60 + newdate[4] - olddate[4]
     return diff
+
+
+def calculate_diff_hour(olddate, newdate):
+    diff = ((newdate[0] - olddate[0]) * 365 + (newdate[1] - olddate[1]) * 30 + newdate[2] -
+            olddate[2]) * 24 + (newdate[3] - olddate[3])
+    return diff
