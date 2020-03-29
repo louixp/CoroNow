@@ -6,6 +6,7 @@ from news.news import NewsAPI
 from config import firebaseConfig
 from analysis.fetch_news import fetch_news
 from analysis.fetch_tweets import fetch_tweets
+from analysis.string_arr_to_XML import convert_to_XML
 import time
 
 
