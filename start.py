@@ -9,17 +9,12 @@ from analysis.fetch_tweets import fetch_tweets
 from analysis.string_arr_to_XML import convert_to_XML
 import time
 from analysis.transform_xml import main as transform_xml
-from analysis.predict import main as predict
 
 
 # source [0: newsapi, 1: twint, 2: both] | mode [0: fetch, 1: upload, 2: both]
 def main(source=2, mode=2):
     firebase = firebaseAPI(firebaseConfig)
     newsapi = NewsAPI()
-    convert_to_XML(firebase, [2020, 3, 27, 22, 0])
-    transform_xml()
-    predict()
-    '''
     while(True):
         if calculate_time() >= 60:
             save_date()

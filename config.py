@@ -45,3 +45,6 @@ mapping = {
     "COVD": ["covd"],
     "Pandemic": ["pandemic"]
 }
+
+categories = ["Adult", "Arts & Entertainment", "Autos & Vehicles", "Beauty & Fitness", "Books & Literature",
+              "Business & Industrial", "Computers & Electronics", "Finance", "Food & Drink", "Games", "Health", "Hobbies & Leisure", "Home & Garden", "Internet & Telecom", "Jobs & Education", "Law & Government", "News", "Online Communities", "People & Society", "Pets & Animals", "Reference", "Real Estate", "Science", "Shopping", "Sports", "Travel", "Sensitive Subjects"]

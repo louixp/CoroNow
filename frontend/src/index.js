@@ -37,7 +37,7 @@ class Main extends React.Component {
     })
       .then(res => res.json())
       .then(res => {
-        console.log(res.words);
+        console.log(res);
         this.setState({
           word_list_version: this.state.word_list_version + 1,
           words: res.words
