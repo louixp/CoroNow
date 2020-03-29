@@ -1,5 +1,40 @@
 .nav-item:hover,
 .nav-item:focus,
 .nav-item:active {
-    background-color: pink;
+  box-shadow: 0px 0px 5px red inset;
+  animation: expand 2s;
+}
+
+#nav_bar {
+  justify-content: flex-start;
+}
+
+#nav_title {
+  background-color: black;
+  color: white;
+  display: inline-block;
+  width: 100%;
+}
+
+#nav_content {
+  min-width: 150px;
+  height: auto;
+  display: inline-block;
+  width: 100%;
+  justify-content: flex-start;
+}
+
+.nav-item {
+  padding: 2px;
+  height: auto;
+  width: 100%;
+}
+
+@keyframes expand {
+  0% {
+    font-size: 15px;
+  }
+  100% {
+    font-size: 17px;
+  }
 }

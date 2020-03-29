@@ -12,7 +12,7 @@ class Nav extends React.Component {
   }
 
   getScrollCallBack(id) {
-    return ()=>{
+    return () => {
       let el = document.getElementById(id);
       if (el) {
         el.scrollIntoView(true);
@@ -24,30 +24,38 @@ class Nav extends React.Component {
   render() {
     return (
       <div
+        id="nav_bar"
         onMouseLeave={this.props.onMouseLeave}
         style={this.props.style}
       >
-        <p>this is nav bar</p>
+        <div id="nav_title">
+          <div>Nav Bar</div>
+        </div>
         {/* <NavItem text="WORD CLOUD" callback={this.getScrollCallBack("word-cloud")} />
         <NavItem text="SEARCH NEWS" callback={this.getScrollCallBack("news-search")} />
         <NavItem text="SENTIMENTS" callback={this.getScrollCallBack("sentiments")} /> */}
-        {this.props.items.map(el => {
-          console.log("return a nav item!");
-          return (<NavItem text={el.text} callback={this.getScrollCallBack(el.id)} />);
-        })}
+        <div id="nav_content">
+          {this.props.items.map(el => {
+            console.log("return a nav item!");
+            return (
+              <NavItem
+                text={el.text}
+                callback={this.getScrollCallBack(el.id)}
+              />
+            );
+          })}
+        </div>
       </div>
     );
   }
 }
 
-function NavItem({text, callback}) {
+function NavItem({ text, callback }) {
   return (
-  <p 
-    onClick={callback}
-    className="nav-item"
-  >
-    {text}
-  </p>);
+    <div onClick={callback} className="nav-item">
+      {text}
+    </div>
+  );
 }
 
 export default Nav;
