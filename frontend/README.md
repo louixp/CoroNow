@@ -27,3 +27,4 @@ NOTES
 ### Sentiments
 
 Add a toolbar on the right side, expand on mouse over.  
+Clicking on a specific term on nav bar will allow more content to be rendered  

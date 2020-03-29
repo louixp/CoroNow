@@ -60,13 +60,33 @@ class Main extends React.Component {
     }
   };
 
-  sideBarContents = (
+  childSideBar = (
     <div
-      className="side-bar-content"
-      onMouseLeave={() => this.setSidebarClosed()}
-      height="100%"
+      className="child-side-bar"
+      // onMouseLeave={() => this.setSidebarClosed()}
+      style={{
+        height: "100%",
+        width: "100%",
+        textAlign: "center",
+        color: "grey",
+        fontFamily: "helvetica"
+      }}
+      onMouseOver={() => this.setSidebarOpen()}
     >
-      <p>hello this is nav</p>
+      <p> >> </p>
+    </div>
+  );
+
+  parentSideBar = (
+    <div
+      className="parent-side-bar"
+      onMouseLeave={() => this.setSidebarClosed()}
+      style={{
+        height: "100%",
+        width: "100%"
+      }}
+    >
+      <p>this is parent side bar</p>
     </div>
   );
 
@@ -100,42 +120,56 @@ class Main extends React.Component {
         }}
         id="main-div"
       >
-        <Sidebar
-          sidebar={this.sideBarContents}
+        {/* <Sidebar
+          sidebar={this.parentSideBar}
           open={this.state.sidebar_open}
           onSetOpen={() => this.setSidebarOpen()}
           styles={this.sideBarStyle}
-          onMouseLeave={() => this.setSidebarClosed()}
-          id="total"
+          // onMouseLeave={() => this.setSidebarClosed()}
+          id="navigate"
+        > */}
+        <Sidebar
+          sidebar={this.childSideBar}
+          // open={this.state.sidebar_open}
+          styles={this.sideBarStyle}
+          // onMouseLeave={() => this.setSidebarClosed()}
+          id="switch"
+          docked={true}
         >
-          <div>
-            <img
-              height="20px"
-              src={hover_menu}
-              alt="menu"
-              onMouseOver={() => this.setSidebarOpen()}
-            />
-          </div>
-          <WordCloud
-            onWordClick={text => this.activateTrend(text)}
-            words={this.state.words}
-            ver={this.state.word_list_version}
-            style={{
-              position: "absolute",
-              top: "20px",
-              left: "0px",
-              right: "0px",
-              bottom: "0px"
-            }}
-          />
-          <Trend
-            enable={this.state.trend_open}
-            text={this.state.overlay_text}
-            handleClose={() => {
-              this.deactivateTrend();
-            }}
-          />
-          {/* <Newslist /> */}
+          <Sidebar
+            sidebar={this.parentSideBar}
+            open={this.state.sidebar_open}
+            onSetOpen={() => this.setSidebarOpen()}
+            styles={this.sideBarStyle}
+            // onMouseLeave={() => this.setSidebarClosed()}
+            id="navigate"
+          >
+            <div
+              style={{
+                float: "right",
+                height: "100%",
+                width: "100%"
+              }}
+            >
+              <WordCloud
+                onWordClick={text => this.activateTrend(text)}
+                words={this.state.words}
+                ver={this.state.word_list_version}
+                style={{
+                  height: "100%",
+                  width: "100%"
+                }}
+              />
+              <Trend
+                enable={this.state.trend_open}
+                text={this.state.overlay_text}
+                handleClose={() => {
+                  this.deactivateTrend();
+                }}
+              />
+              <Newslist />
+            </div>
+          </Sidebar>
         </Sidebar>
       </div>
     );
