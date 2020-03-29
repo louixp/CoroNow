@@ -12,10 +12,6 @@ body,
   overflow: hidden;
 }
 
-#sentiments {
-  overflow: auto;
-}
-
 /* Hide Scroll Bar */
 /* Chrome*/
 body::-webkit-scrollbar,
