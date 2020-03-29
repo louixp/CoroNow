@@ -1,0 +1,23 @@
+#sentiment_title {
+  font-size: 40px;
+  font-family: "Raleway", sans-serif;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  background-color: rgb(238, 138, 138);
+  text-align: center;
+}
+
+#sentiment_contents {
+  background-color: rgb(153, 153, 255)
+}
+
+div.sentiment_small {
+  text-align: center;
+  font-size: large;
+  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(235, 220, 14);
+}
+
+div.sentiment_trend {
+  width: 60%
+}

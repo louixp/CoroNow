@@ -3,7 +3,6 @@ import React from "react";
 import "./index.css";
 import "d3-transition";
 import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
 import Wordtrend from "./wordtrend.js";
 
 class Trend extends React.Component {
