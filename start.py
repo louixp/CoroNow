@@ -6,6 +6,7 @@ from news.news import NewsAPI
 from config import firebaseConfig
 from analysis.fetch_news import fetch_news
 from analysis.fetch_tweets import fetch_tweets
+from analysis.string_arr_to_XML import convert_to_XML
 import time
 
 
@@ -28,7 +29,6 @@ def main(source=2, mode=2):
             date = format_date()
             print("\n== Waiting at {0} ==\n".format(date))
         time.sleep(60)
-    '''
 
 
 if __name__ == "__main__":
